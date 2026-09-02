@@ -1,0 +1,6 @@
+{
+  "name": "WasteWise AI",
+  "description": "Smart Food Waste Prediction and Management System Using Machine Learning to predict food demand, minimize waste, and optimize preparation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
