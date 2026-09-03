@@ -1,0 +1,17 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/web_preview/index.html"
+    },
+    {
+      "source": "/wastewise_large_dataset_15k.csv",
+      "destination": "/web_preview/wastewise_large_dataset_15k.csv"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/web_preview/$1"
+    }
+  ]
+}
