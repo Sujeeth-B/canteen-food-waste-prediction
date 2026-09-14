@@ -55,7 +55,7 @@ object FeaturePipeline {
     )
     val WEATHERS = listOf("Sunny", "Rainy", "Cloudy")
 
-    // 25 Advanced Categorical Variables
+    // 26 Advanced Variables
     val DAY_TYPES = listOf("Regular Working Day", "Weekend", "Public Holiday", "College Holiday", "Festival Holiday", "Vacation", "Exam Day")
     val HOLIDAY_IMPACTS = listOf("No Holiday", "Low Impact", "Moderate Impact", "High Impact", "Very High Impact")
     val WEATHER_CONDITIONS = listOf("Sunny", "Partly Cloudy", "Cloudy", "Light Rain", "Moderate Rain", "Heavy Rain", "Storm")
@@ -157,7 +157,7 @@ object FeaturePipeline {
         features.add(customers / 1000.0)
         features.add(costPerKg / 500.0)
 
-        // 7. 25 Advanced Categorical Variables (Normalized encodings)
+        // 7. 26 Advanced Variables (Normalized encodings)
         features.add(encodeOrdinal(dayType, DAY_TYPES))
         features.add(encodeOrdinal(holidayImpact, HOLIDAY_IMPACTS))
         features.add(encodeOrdinal(weatherCondition, WEATHER_CONDITIONS))

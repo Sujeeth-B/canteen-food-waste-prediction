@@ -33,13 +33,13 @@ object DatasetGenerator {
     )
 
     /**
-     * Generates 15,000 realistic food consumption and waste records
-     * featuring all 25 advanced variables with realistic cross-variable correlations.
+     * Generates 30,000 realistic food consumption and waste records
+     * featuring all 26 advanced variables with realistic cross-variable correlations.
      */
-    fun generateRealisticDataset(count: Int = 15000): List<FoodRecordEntity> {
+    fun generateRealisticDataset(count: Int = 30000): List<FoodRecordEntity> {
         val records = ArrayList<FoodRecordEntity>(count)
         val calendar = Calendar.getInstance()
-        // Start ~5,000 days in past (3 meals per day = 15,000 records)
+        // Start ~10,000 days in past (3 meals per day = 30,000 records)
         val totalDays = (count / 3) + 20
         calendar.add(Calendar.DAY_OF_YEAR, -totalDays)
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

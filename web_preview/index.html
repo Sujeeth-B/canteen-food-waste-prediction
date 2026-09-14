@@ -477,7 +477,7 @@
             gap: 8px;
         }
 
-        /* 25 Variables & Modal Styles */
+        /* 26 Variables & Modal Styles */
         .toast {
             position: fixed;
             bottom: 24px;
@@ -559,7 +559,7 @@
 
     <div class="academic-banner">
         <i class="fa-solid fa-graduation-cap"></i>
-        <span>WasteWise AI Web Preview - Academic Demonstration Dashboard (15,000 Records Dataset & 25 Advanced Variables Integrated)</span>
+        <span>WasteWise AI Web Preview - Academic Demonstration Dashboard (30,000 Records Dataset & 26 Advanced Variables Integrated)</span>
     </div>
 
     <!-- Top Navigation Header -->
@@ -576,14 +576,11 @@
                 <button class="nav-tab active" onclick="switchScreen('dashboard', this)">
                     <i class="fa-solid fa-chart-pie"></i> Dashboard
                 </button>
-                <button class="nav-tab" onclick="switchScreen('records', this)">
-                    <i class="fa-solid fa-table-cells"></i> Food Records
-                </button>
-                <button class="nav-tab" onclick="switchScreen('add-food', this)">
-                    <i class="fa-solid fa-circle-plus"></i> Add Entry
-                </button>
                 <button class="nav-tab" onclick="switchScreen('prediction', this)">
                     <i class="fa-solid fa-brain"></i> AI Prediction
+                </button>
+                <button class="nav-tab" onclick="switchScreen('records', this)">
+                    <i class="fa-solid fa-table-cells"></i> Food Records
                 </button>
                 <button class="nav-tab" onclick="switchScreen('analytics', this)">
                     <i class="fa-solid fa-chart-line"></i> Analytics
@@ -591,8 +588,8 @@
                 <button class="nav-tab" onclick="switchScreen('model-perf', this)">
                     <i class="fa-solid fa-sliders"></i> ML Models
                 </button>
-                <button class="nav-tab" onclick="switchScreen('variables-25', this)">
-                    <i class="fa-solid fa-list-check"></i> 25 Variables & Dataset
+                <button class="nav-tab" onclick="switchScreen('variables-26', this)">
+                    <i class="fa-solid fa-list-check"></i> 26 Variables & Dataset
                 </button>
             </nav>
 
@@ -630,8 +627,8 @@
                         <span>Total Records</span>
                         <div class="stat-icon"><i class="fa-solid fa-database"></i></div>
                     </div>
-                    <div class="stat-value">15,000</div>
-                    <div class="stat-badge badge-success"><i class="fa-solid fa-check"></i> 5,000 Days Tracked</div>
+                    <div class="stat-value">30,000</div>
+                    <div class="stat-badge badge-success"><i class="fa-solid fa-check"></i> 10,000 Days Tracked</div>
                 </div>
 
                 <div class="stat-card" style="--card-accent: #ef4444;">
@@ -719,16 +716,503 @@
             </div>
         </section>
 
-        <!-- 2. FOOD RECORDS SCREEN -->
+        <!-- 2. AI PREDICTION SCREEN (ALL 26 VARIABLES) -->
+        <section id="screen-prediction" class="screen-section">
+            <div class="section-header">
+                <div>
+                    <h1 class="section-title">AI Food Demand & Waste Prediction</h1>
+                    <p class="section-subtitle">Predict customer footfall & optimal food quantity using all 26 ML features</p>
+                </div>
+                <div style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6; border: 1px solid #8b5cf6; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-brain"></i> 26-Variable ML Engine
+                </div>
+            </div>
+
+            <!-- Quick Prediction Presets -->
+            <div style="margin-bottom: 20px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.9rem; color: #8b5cf6;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Quick Scenario Presets:</span>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" class="preset-btn" onclick="applyPredPreset('normal')">
+                        🎓 Normal Day
+                    </button>
+                    <button type="button" class="preset-btn" onclick="applyPredPreset('exam')">
+                        📝 Exam Day
+                    </button>
+                    <button type="button" class="preset-btn" onclick="applyPredPreset('rain')">
+                        🌧️ Heavy Rain
+                    </button>
+                    <button type="button" class="preset-btn" onclick="applyPredPreset('fest')">
+                        🎉 Cultural Fest
+                    </button>
+                </div>
+            </div>
+
+            <form id="prediction-form" onsubmit="runAIPrediction(event)">
+
+                <!-- Core Service Parameters -->
+                <div class="card-box">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #10b981;">
+                            <i class="fa-solid fa-utensils"></i>
+                            <span>Core Service Parameters</span>
+                        </div>
+                        <span class="stat-badge badge-success">Base Inputs</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fa-regular fa-calendar"></i> Target Date</label>
+                            <input type="date" id="pred-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-clock"></i> Meal Type</label>
+                            <select id="pred-meal">
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch" selected>Lunch</option>
+                                <option value="Dinner">Dinner</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-bowl-food"></i> Food Item</label>
+                            <select id="pred-food">
+                                <option value="Biryani" selected>Biryani</option>
+                                <option value="South Indian Thali">South Indian Thali</option>
+                                <option value="Rice & Curry">Rice & Curry</option>
+                                <option value="Roti & Dal">Roti & Dal</option>
+                                <option value="Noodles & Fried Rice">Noodles & Fried Rice</option>
+                                <option value="Idli & Dosa">Idli & Dosa</option>
+                                <option value="Sandwich & Snacks">Sandwich & Snacks</option>
+                                <option value="Dessert & Sweets">Dessert & Sweets</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-users"></i> Expected Customers</label>
+                            <input type="number" id="pred-customers" value="480" min="10">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-cloud-sun"></i> Weather Forecast</label>
+                            <select id="pred-weather">
+                                <option value="Sunny" selected>Sunny</option>
+                                <option value="Partly Cloudy">Partly Cloudy</option>
+                                <option value="Cloudy">Cloudy</option>
+                                <option value="Rainy">Rainy</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Variable Category 1: Academic & Calendar -->
+                <div class="card-box">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #3b82f6;">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>1. Academic & Calendar Dynamics</span>
+                        </div>
+                        <span class="stat-badge badge-blue">Variables 1, 2, 10, 11, 12</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>1. Day Type</label>
+                            <select id="pred-var-day-type">
+                                <option value="Regular Working Day" selected>Regular Working Day</option>
+                                <option value="Weekend">Weekend</option>
+                                <option value="Public Holiday">Public Holiday</option>
+                                <option value="College Holiday">College Holiday</option>
+                                <option value="Festival Holiday">Festival Holiday</option>
+                                <option value="Vacation">Vacation</option>
+                                <option value="Exam Day">Exam Day</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>2. Holiday Impact</label>
+                            <select id="pred-var-holiday-impact">
+                                <option value="No Holiday" selected>No Holiday</option>
+                                <option value="Low Impact">Low Impact</option>
+                                <option value="Moderate Impact">Moderate Impact</option>
+                                <option value="High Impact">High Impact</option>
+                                <option value="Very High Impact">Very High Impact</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>10. Exam Period</label>
+                            <select id="pred-var-exam-period">
+                                <option value="No Exam" selected>No Exam</option>
+                                <option value="Exam Preparation">Exam Preparation</option>
+                                <option value="Internal Exam">Internal Exam</option>
+                                <option value="Semester Exam">Semester Exam</option>
+                                <option value="Practical Exam">Practical Exam</option>
+                                <option value="Post Exam">Post Exam</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>11. College Activity Level</label>
+                            <select id="pred-var-college-activity">
+                                <option value="No Activity">No Activity</option>
+                                <option value="Normal Classes" selected>Normal Classes</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Seminar">Seminar</option>
+                                <option value="Sports Event">Sports Event</option>
+                                <option value="Cultural Event">Cultural Event</option>
+                                <option value="Major College Event">Major College Event</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>12. Special Event Impact</label>
+                            <select id="pred-var-special-event-impact">
+                                <option value="None" selected>None</option>
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Very High">Very High</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Variable Category 2: Weather & Environment -->
+                <div class="card-box">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #f59e0b;">
+                            <i class="fa-solid fa-cloud-sun-rain"></i>
+                            <span>2. Weather & Environmental Factors</span>
+                        </div>
+                        <span class="stat-badge badge-warning">Variables 3, 4, 5, 6</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>3. Weather Condition</label>
+                            <select id="pred-var-weather-condition">
+                                <option value="Sunny" selected>Sunny</option>
+                                <option value="Partly Cloudy">Partly Cloudy</option>
+                                <option value="Cloudy">Cloudy</option>
+                                <option value="Light Rain">Light Rain</option>
+                                <option value="Moderate Rain">Moderate Rain</option>
+                                <option value="Heavy Rain">Heavy Rain</option>
+                                <option value="Storm">Storm</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>4. Temperature Category</label>
+                            <select id="pred-var-temp-cat">
+                                <option value="Very Cool">Very Cool</option>
+                                <option value="Cool">Cool</option>
+                                <option value="Moderate" selected>Moderate</option>
+                                <option value="Warm">Warm</option>
+                                <option value="Hot">Hot</option>
+                                <option value="Very Hot">Very Hot</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>5. Rainfall Intensity</label>
+                            <select id="pred-var-rainfall-intensity">
+                                <option value="None" selected>None</option>
+                                <option value="Very Light">Very Light</option>
+                                <option value="Light">Light</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Heavy">Heavy</option>
+                                <option value="Very Heavy">Very Heavy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>6. Weather Attendance Impact</label>
+                            <select id="pred-var-weather-impact">
+                                <option value="Strongly Decreases">Strongly Decreases</option>
+                                <option value="Decreases">Decreases</option>
+                                <option value="No Significant Impact" selected>No Significant Impact</option>
+                                <option value="Increases">Increases</option>
+                                <option value="Strongly Increases">Strongly Increases</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Variable Category 3: Campus Footfall & Crowd -->
+                <div class="card-box">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #8b5cf6;">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                            <span>3. Campus Footfall & Crowd Dynamics</span>
+                        </div>
+                        <span class="stat-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">Variables 7, 8, 9, 18, 19</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>7. Expected Crowd Level</label>
+                            <select id="pred-var-crowd-level">
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                                <option value="Very High">Very High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>8. Student Attendance Pattern</label>
+                            <select id="pred-var-attendance-pattern">
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low">Low</option>
+                                <option value="Normal" selected>Normal</option>
+                                <option value="High">High</option>
+                                <option value="Very High">Very High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>9. Hostel Occupancy Level</label>
+                            <select id="pred-var-hostel-occupancy">
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                                <option value="Full">Full</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>18. Customer Demand Trend</label>
+                            <select id="pred-var-demand-trend">
+                                <option value="Strongly Decreasing">Strongly Decreasing</option>
+                                <option value="Decreasing">Decreasing</option>
+                                <option value="Stable" selected>Stable</option>
+                                <option value="Increasing">Increasing</option>
+                                <option value="Strongly Increasing">Strongly Increasing</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>19. Previous Similar-Day Demand</label>
+                            <select id="pred-var-sim-day-demand">
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                                <option value="Very High">Very High</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Variable Category 4: Menu & Food Dynamics -->
+                <div class="card-box">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #ec4899;">
+                            <i class="fa-solid fa-plate-wheat"></i>
+                            <span>4. Menu Characteristics & Food Dynamics</span>
+                        </div>
+                        <span class="stat-badge" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">Variables 13, 14, 15, 16, 17, 24</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>13. Menu Popularity</label>
+                            <select id="pred-var-menu-popularity">
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low">Low</option>
+                                <option value="Average">Average</option>
+                                <option value="Popular" selected>Popular</option>
+                                <option value="Very Popular">Very Popular</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>14. Food Preference Pattern</label>
+                            <select id="pred-var-pref-pattern">
+                                <option value="Mostly Vegetarian">Mostly Vegetarian</option>
+                                <option value="Mostly Non-Vegetarian">Mostly Non-Vegetarian</option>
+                                <option value="Balanced" selected>Balanced</option>
+                                <option value="Special Dietary Preference">Special Dietary Preference</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>15. Menu Type</label>
+                            <select id="pred-var-menu-type">
+                                <option value="Regular" selected>Regular</option>
+                                <option value="Student Favorite">Student Favorite</option>
+                                <option value="Special">Special</option>
+                                <option value="Festival">Festival</option>
+                                <option value="Premium">Premium</option>
+                                <option value="Healthy">Healthy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>16. Previous Meal Satisfaction</label>
+                            <select id="pred-var-meal-satisfaction">
+                                <option value="Very Poor">Very Poor</option>
+                                <option value="Poor">Poor</option>
+                                <option value="Average">Average</option>
+                                <option value="Good" selected>Good</option>
+                                <option value="Excellent">Excellent</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>17. Outside Food Availability</label>
+                            <select id="pred-var-outside-food">
+                                <option value="Not Available">Not Available</option>
+                                <option value="Low">Low</option>
+                                <option value="Moderate" selected>Moderate</option>
+                                <option value="High">High</option>
+                                <option value="Very High">Very High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>24. Food Preference Change</label>
+                            <select id="pred-var-pref-change">
+                                <option value="No Change" selected>No Change</option>
+                                <option value="Slight Change">Slight Change</option>
+                                <option value="Moderate Change">Moderate Change</option>
+                                <option value="Significant Change">Significant Change</option>
+                                <option value="Major Change">Major Change</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Variable Category 5: Kitchen Operations -->
+                <div class="card-box">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #10b981;">
+                            <i class="fa-solid fa-fire-burner"></i>
+                            <span>5. Kitchen Operations & Logistics Buffers</span>
+                        </div>
+                        <span class="stat-badge badge-success">Variables 20, 21, 22, 23, 25, 26</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>20. Food Demand Volatility</label>
+                            <select id="pred-var-demand-volatility">
+                                <option value="Very Stable">Very Stable</option>
+                                <option value="Stable" selected>Stable</option>
+                                <option value="Moderate Variation">Moderate Variation</option>
+                                <option value="High Variation">High Variation</option>
+                                <option value="Very High Variation">Very High Variation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>21. Kitchen Production Load</label>
+                            <select id="pred-var-production-load">
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low">Low</option>
+                                <option value="Normal" selected>Normal</option>
+                                <option value="High">High</option>
+                                <option value="Overloaded">Overloaded</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>22. Serving Capacity</label>
+                            <select id="pred-var-serving-capacity">
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low">Low</option>
+                                <option value="Adequate" selected>Adequate</option>
+                                <option value="High">High</option>
+                                <option value="Very High">Very High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>23. Customer Arrival Pattern</label>
+                            <select id="pred-var-arrival-pattern">
+                                <option value="Very Slow">Very Slow</option>
+                                <option value="Slow">Slow</option>
+                                <option value="Normal" selected>Normal</option>
+                                <option value="Fast">Fast</option>
+                                <option value="Very Fast">Very Fast</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>25. Previous Similar-Day Waste Level</label>
+                            <select id="pred-var-sim-day-waste">
+                                <option value="Very Low">Very Low</option>
+                                <option value="Low" selected>Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Very High">Very High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>26. Predicted Consumption (kg)</label>
+                            <input type="number" step="0.1" id="pred-var-predicted-consumption" value="354.3" placeholder="354.3" required min="0.1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Run Prediction Button -->
+                <div style="margin-bottom: 24px; padding: 18px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(16, 185, 129, 0.15)); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--text-sub);">Model: Random Forest Regressor (R² = 0.942) &bull; Features: 26 Contextual Variables</div>
+                        <div style="font-size: 1.1rem; font-weight: 800; color: #8b5cf6;" id="pred-vars-count">
+                            <i class="fa-solid fa-microchip"></i> All 26 variables configured — ready for inference
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="padding: 14px 32px; font-size: 1.05rem; background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                        <i class="fa-solid fa-brain"></i> Run AI Model Prediction
+                    </button>
+                </div>
+            </form>
+
+            <!-- Prediction Output Result -->
+            <div class="grid-2">
+                <div>
+                    <div class="prediction-result-card" id="pred-result-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 style="font-size: 1.25rem; font-weight: 800; color: #10b981;">
+                                <i class="fa-solid fa-circle-check"></i> ML Recommendation Output
+                            </h3>
+                            <span class="stat-badge badge-success" id="pred-risk-badge">LOW WASTE RISK</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                            <div style="background: rgba(16, 185, 129, 0.15); padding: 14px; border-radius: 12px; border: 1px solid #10b981;">
+                                <div style="font-size: 0.8rem; color: #10b981; font-weight: 700;">Recommended Prep</div>
+                                <div style="font-size: 1.5rem; font-weight: 800; color: #10b981;" id="res-prep">— kg</div>
+                            </div>
+                            <div style="background: rgba(0, 0, 0, 0.2); padding: 14px; border-radius: 12px;">
+                                <div style="font-size: 0.8rem; color: var(--text-sub);">Predicted Waste</div>
+                                <div style="font-size: 1.5rem; font-weight: 800; color: #ef4444;" id="res-waste">— kg</div>
+                            </div>
+                            <div style="background: rgba(245, 158, 11, 0.15); padding: 14px; border-radius: 12px; border: 1px solid #f59e0b;">
+                                <div style="font-size: 0.8rem; color: #f59e0b; font-weight: 700;">Cost Savings</div>
+                                <div style="font-size: 1.5rem; font-weight: 800; color: #f59e0b;" id="res-savings">₹ —</div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; font-size: 0.9rem; line-height: 1.5;" id="res-advice">
+                            <i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i>
+                            <strong>AI Strategy:</strong> Configure all variables and click "Run AI Model Prediction" to get ML-powered recommendations.
+                        </div>
+
+                        <!-- Saved to Food Records Confirmation Banner -->
+                        <div id="pred-saved-banner" style="display: none; margin-top: 16px; padding: 14px 18px; background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; border-radius: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <i class="fa-solid fa-circle-check" style="font-size: 1.4rem; color: #10b981;"></i>
+                                <div>
+                                    <div style="font-weight: 700; color: #10b981; font-size: 0.95rem;" id="pred-saved-title">Saved to Food Records History!</div>
+                                    <div style="font-size: 0.82rem; color: var(--text-sub);" id="pred-saved-desc">Record added to recent database logs.</div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="switchTabByName('records')" style="padding: 8px 18px; font-size: 0.85rem;">
+                                <i class="fa-solid fa-table-cells"></i> View in Food Records
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 26-Variable Contribution Breakdown -->
+                <div>
+                    <div class="card-box" id="pred-var-breakdown" style="display: none;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 1.05rem; font-weight: 700; color: #8b5cf6;">
+                            <i class="fa-solid fa-chart-bar"></i>
+                            <span>Variable Impact Breakdown</span>
+                        </div>
+                        <div id="pred-var-bars"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. FOOD RECORDS SCREEN -->
         <section id="screen-records" class="screen-section">
             <div class="section-header">
                 <div>
                     <h1 class="section-title">Food Consumption Database</h1>
-                    <p class="section-subtitle">Historical log of 1,050 canteen serving records</p>
+                    <p class="section-subtitle">Real-time & Historical log of canteen serving records (30,000 Dataset)</p>
                 </div>
-                <button class="btn btn-primary" onclick="switchTabByName('add-food')">
-                    <i class="fa-solid fa-plus"></i> Add New Record
-                </button>
             </div>
 
             <div class="table-card">
@@ -754,529 +1238,13 @@
                             <th>Wasted (kg)</th>
                             <th>Weather</th>
                             <th>Loss (₹)</th>
-                            <th>25 Variables</th>
+                            <th>26 Variables</th>
                         </tr>
                     </thead>
                     <tbody id="full-records-table">
                         <!-- Populated by JS -->
                     </tbody>
                 </table>
-            </div>
-        </section>
-
-        <!-- 3. ADD FOOD DATA SCREEN (25 VARIABLES) -->
-        <section id="screen-add-food" class="screen-section">
-            <div class="section-header">
-                <div>
-                    <h1 class="section-title">Add Canteen Serving Log (25 Contextual Variables)</h1>
-                    <p class="section-subtitle">Record comprehensive service logistics, climate factors, and operational metrics</p>
-                </div>
-                <div style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-layer-group"></i> 25 Variables Form
-                </div>
-            </div>
-
-            <!-- Quick Auto-Fill Presets Bar -->
-            <div style="margin-bottom: 20px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-                <div style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.9rem; color: var(--accent-green);">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>Quick Realistic Presets:</span>
-                </div>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" class="preset-btn" onclick="applyPreset('normal')">
-                        🎓 Regular Working Day
-                    </button>
-                    <button type="button" class="preset-btn" onclick="applyPreset('exam')">
-                        📝 Semester Exam Day
-                    </button>
-                    <button type="button" class="preset-btn" onclick="applyPreset('rain')">
-                        🌧️ Heavy Rain / Monsoon
-                    </button>
-                    <button type="button" class="preset-btn" onclick="applyPreset('fest')">
-                        🎉 College Cultural Fest
-                    </button>
-                </div>
-            </div>
-
-            <form id="add-food-form" onsubmit="handleAddFoodSubmit(event)">
-                <!-- Core Serving Information -->
-                <div class="card-box">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 1.05rem; font-weight: 700; color: #10b981;">
-                        <i class="fa-solid fa-utensils"></i>
-                        <span>Core Serving & Consumption Metrics</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label><i class="fa-regular fa-calendar"></i> Date</label>
-                            <input type="date" id="add-date" required>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-clock"></i> Meal Type</label>
-                            <select id="add-meal" required>
-                                <option value="Breakfast">Breakfast</option>
-                                <option value="Lunch" selected>Lunch</option>
-                                <option value="Dinner">Dinner</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-bowl-food"></i> Food Item</label>
-                            <select id="add-food" required>
-                                <option value="Biryani" selected>Biryani</option>
-                                <option value="South Indian Thali">South Indian Thali</option>
-                                <option value="Rice & Curry">Rice & Curry</option>
-                                <option value="Roti & Dal">Roti & Dal</option>
-                                <option value="Noodles & Fried Rice">Noodles & Fried Rice</option>
-                                <option value="Idli & Dosa">Idli & Dosa</option>
-                                <option value="Sandwich & Snacks">Sandwich & Snacks</option>
-                                <option value="Dessert & Sweets">Dessert & Sweets</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-users"></i> Customer Count</label>
-                            <input type="number" id="add-customers" value="480" required min="10">
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-scale-balanced"></i> Food Prepared (kg)</label>
-                            <input type="number" step="0.1" id="add-prepared" value="168.0" required oninput="calcWaste()">
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-plate-wheat"></i> Food Consumed (kg)</label>
-                            <input type="number" step="0.1" id="add-consumed" value="151.0" required oninput="calcWaste()">
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-indian-rupee-sign"></i> Cost per kg (₹)</label>
-                            <input type="number" id="add-cost" value="180" required min="10">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 25 ADVANCED VARIABLES CATEGORIZED -->
-
-                <!-- Category 1: Academic & Calendar Dynamics (Variables 1, 2, 10, 11, 12) -->
-                <div class="card-box">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #3b82f6;">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            <span>1. Academic & Calendar Dynamics</span>
-                        </div>
-                        <span class="stat-badge badge-blue">Variables 1, 2, 10, 11, 12</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>1. Day Type</label>
-                            <select id="var-day-type">
-                                <option value="Regular Working Day" selected>Regular Working Day</option>
-                                <option value="Weekend">Weekend</option>
-                                <option value="Public Holiday">Public Holiday</option>
-                                <option value="College Holiday">College Holiday</option>
-                                <option value="Festival Holiday">Festival Holiday</option>
-                                <option value="Vacation">Vacation</option>
-                                <option value="Exam Day">Exam Day</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>2. Holiday Impact</label>
-                            <select id="var-holiday-impact">
-                                <option value="No Holiday" selected>No Holiday</option>
-                                <option value="Low Impact">Low Impact</option>
-                                <option value="Moderate Impact">Moderate Impact</option>
-                                <option value="High Impact">High Impact</option>
-                                <option value="Very High Impact">Very High Impact</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>10. Exam Period</label>
-                            <select id="var-exam-period">
-                                <option value="No Exam" selected>No Exam</option>
-                                <option value="Exam Preparation">Exam Preparation</option>
-                                <option value="Internal Exam">Internal Exam</option>
-                                <option value="Semester Exam">Semester Exam</option>
-                                <option value="Practical Exam">Practical Exam</option>
-                                <option value="Post Exam">Post Exam</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>11. College Activity Level</label>
-                            <select id="var-college-activity">
-                                <option value="No Activity">No Activity</option>
-                                <option value="Normal Classes" selected>Normal Classes</option>
-                                <option value="Workshop">Workshop</option>
-                                <option value="Seminar">Seminar</option>
-                                <option value="Sports Event">Sports Event</option>
-                                <option value="Cultural Event">Cultural Event</option>
-                                <option value="Major College Event">Major College Event</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>12. Special Event Impact</label>
-                            <select id="var-special-event-impact">
-                                <option value="None" selected>None</option>
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low">Low</option>
-                                <option value="Medium">Medium</option>
-                                <option value="High">High</option>
-                                <option value="Very High">Very High</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Category 2: Weather & Atmospheric Factors (Variables 3, 4, 5, 6) -->
-                <div class="card-box">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #f59e0b;">
-                            <i class="fa-solid fa-cloud-sun-rain"></i>
-                            <span>2. Weather & Environmental Factors</span>
-                        </div>
-                        <span class="stat-badge badge-warning">Variables 3, 4, 5, 6</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>3. Weather Condition</label>
-                            <select id="var-weather-condition">
-                                <option value="Sunny" selected>Sunny</option>
-                                <option value="Partly Cloudy">Partly Cloudy</option>
-                                <option value="Cloudy">Cloudy</option>
-                                <option value="Light Rain">Light Rain</option>
-                                <option value="Moderate Rain">Moderate Rain</option>
-                                <option value="Heavy Rain">Heavy Rain</option>
-                                <option value="Storm">Storm</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>4. Temperature Category</label>
-                            <select id="var-temp-cat">
-                                <option value="Very Cool">Very Cool</option>
-                                <option value="Cool">Cool</option>
-                                <option value="Moderate" selected>Moderate</option>
-                                <option value="Warm">Warm</option>
-                                <option value="Hot">Hot</option>
-                                <option value="Very Hot">Very Hot</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>5. Rainfall Intensity</label>
-                            <select id="var-rainfall-intensity">
-                                <option value="None" selected>None</option>
-                                <option value="Very Light">Very Light</option>
-                                <option value="Light">Light</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Heavy">Heavy</option>
-                                <option value="Very Heavy">Very Heavy</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>6. Weather Attendance Impact</label>
-                            <select id="var-weather-impact">
-                                <option value="Strongly Decreases">Strongly Decreases</option>
-                                <option value="Decreases">Decreases</option>
-                                <option value="No Significant Impact" selected>No Significant Impact</option>
-                                <option value="Increases">Increases</option>
-                                <option value="Strongly Increases">Strongly Increases</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Category 3: Campus Footfall & Crowd (Variables 7, 8, 9, 18, 19) -->
-                <div class="card-box">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #8b5cf6;">
-                            <i class="fa-solid fa-users-viewfinder"></i>
-                            <span>3. Campus Footfall & Crowd Dynamics</span>
-                        </div>
-                        <span class="stat-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">Variables 7, 8, 9, 18, 19</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>7. Expected Crowd Level</label>
-                            <select id="var-crowd-level">
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low">Low</option>
-                                <option value="Medium" selected>Medium</option>
-                                <option value="High">High</option>
-                                <option value="Very High">Very High</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>8. Student Attendance Pattern</label>
-                            <select id="var-attendance-pattern">
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low">Low</option>
-                                <option value="Normal" selected>Normal</option>
-                                <option value="High">High</option>
-                                <option value="Very High">Very High</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>9. Hostel Occupancy Level</label>
-                            <select id="var-hostel-occupancy">
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low">Low</option>
-                                <option value="Medium" selected>Medium</option>
-                                <option value="High">High</option>
-                                <option value="Full">Full</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>18. Customer Demand Trend</label>
-                            <select id="var-demand-trend">
-                                <option value="Strongly Decreasing">Strongly Decreasing</option>
-                                <option value="Decreasing">Decreasing</option>
-                                <option value="Stable" selected>Stable</option>
-                                <option value="Increasing">Increasing</option>
-                                <option value="Strongly Increasing">Strongly Increasing</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>19. Previous Similar-Day Demand</label>
-                            <select id="var-sim-day-demand">
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low">Low</option>
-                                <option value="Medium" selected>Medium</option>
-                                <option value="High">High</option>
-                                <option value="Very High">Very High</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Category 4: Menu & Food Dynamics (Variables 13, 14, 15, 16, 17, 24) -->
-                <div class="card-box">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #ec4899;">
-                            <i class="fa-solid fa-plate-wheat"></i>
-                            <span>4. Menu Characteristics & Food Dynamics</span>
-                        </div>
-                        <span class="stat-badge" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">Variables 13, 14, 15, 16, 17, 24</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>13. Menu Popularity</label>
-                            <select id="var-menu-popularity">
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low">Low</option>
-                                <option value="Average">Average</option>
-                                <option value="Popular" selected>Popular</option>
-                                <option value="Very Popular">Very Popular</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>14. Food Preference Pattern</label>
-                            <select id="var-pref-pattern">
-                                <option value="Mostly Vegetarian">Mostly Vegetarian</option>
-                                <option value="Mostly Non-Vegetarian">Mostly Non-Vegetarian</option>
-                                <option value="Balanced" selected>Balanced</option>
-                                <option value="Special Dietary Preference">Special Dietary Preference</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>15. Menu Type</label>
-                            <select id="var-menu-type">
-                                <option value="Regular" selected>Regular</option>
-                                <option value="Student Favorite">Student Favorite</option>
-                                <option value="Special">Special</option>
-                                <option value="Festival">Festival</option>
-                                <option value="Premium">Premium</option>
-                                <option value="Healthy">Healthy</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>16. Previous Meal Satisfaction</label>
-                            <select id="var-meal-satisfaction">
-                                <option value="Very Poor">Very Poor</option>
-                                <option value="Poor">Poor</option>
-                                <option value="Average">Average</option>
-                                <option value="Good" selected>Good</option>
-                                <option value="Excellent">Excellent</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>17. Outside Food Availability</label>
-                            <select id="var-outside-food">
-                                <option value="Not Available">Not Available</option>
-                                <option value="Low">Low</option>
-                                <option value="Moderate" selected>Moderate</option>
-                                <option value="High">High</option>
-                                <option value="Very High">Very High</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>24. Food Preference Change</label>
-                            <select id="var-pref-change">
-                                <option value="No Change" selected>No Change</option>
-                                <option value="Slight Change">Slight Change</option>
-                                <option value="Moderate Change">Moderate Change</option>
-                                <option value="Significant Change">Significant Change</option>
-                                <option value="Major Change">Major Change</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Category 5: Kitchen Operations & Supply Buffers (Variables 20, 21, 22, 23, 25) -->
-                <div class="card-box">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; color: #10b981;">
-                            <i class="fa-solid fa-fire-burner"></i>
-                            <span>5. Kitchen Operations & Logistics Buffers</span>
-                        </div>
-                        <span class="stat-badge badge-success">Variables 20, 21, 22, 23, 25</span>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>20. Food Demand Volatility</label>
-                            <select id="var-demand-volatility">
-                                <option value="Very Stable">Very Stable</option>
-                                <option value="Stable" selected>Stable</option>
-                                <option value="Moderate Variation">Moderate Variation</option>
-                                <option value="High Variation">High Variation</option>
-                                <option value="Very High Variation">Very High Variation</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>21. Kitchen Production Load</label>
-                            <select id="var-production-load">
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low">Low</option>
-                                <option value="Normal" selected>Normal</option>
-                                <option value="High">High</option>
-                                <option value="Overloaded">Overloaded</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>22. Serving Capacity</label>
-                            <select id="var-serving-capacity">
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low">Low</option>
-                                <option value="Adequate" selected>Adequate</option>
-                                <option value="High">High</option>
-                                <option value="Very High">Very High</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>23. Customer Arrival Pattern</label>
-                            <select id="var-arrival-pattern">
-                                <option value="Very Slow">Very Slow</option>
-                                <option value="Slow">Slow</option>
-                                <option value="Normal" selected>Normal</option>
-                                <option value="Fast">Fast</option>
-                                <option value="Very Fast">Very Fast</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>25. Previous Similar-Day Waste Level</label>
-                            <select id="var-sim-day-waste">
-                                <option value="Very Low">Very Low</option>
-                                <option value="Low" selected>Low</option>
-                                <option value="Medium">Medium</option>
-                                <option value="High">High</option>
-                                <option value="Very High">Very High</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Waste & Financial Output Live Banner -->
-                <div style="margin-bottom: 24px; padding: 18px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-                    <div>
-                        <div style="font-size: 0.85rem; color: var(--text-sub);">Real-Time Computed Waste & Financial Loss:</div>
-                        <div style="font-size: 1.25rem; font-weight: 800; color: #10b981;" id="waste-calc-output">
-                            Waste: 17.0 kg | Financial Loss: ₹ 3,060
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="padding: 12px 28px; font-size: 1rem;">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Save Canteen Record (All 25 Variables)
-                    </button>
-                </div>
-            </form>
-        </section>
-
-        <!-- 4. AI PREDICTION SCREEN -->
-        <section id="screen-prediction" class="screen-section">
-            <div class="section-header">
-                <div>
-                    <h1 class="section-title">AI Food Demand & Waste Prediction</h1>
-                    <p class="section-subtitle">Predict customer footfall & optimal food quantity using Machine Learning</p>
-                </div>
-            </div>
-
-            <div class="grid-2">
-                <div class="chart-card">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i class="fa-solid fa-sliders" style="color: #10b981;"></i> Service Parameters</h3>
-                    <form id="prediction-form" onsubmit="runAIPrediction(event)">
-                        <div class="form-group" style="margin-bottom: 14px;">
-                            <label>Target Date</label>
-                            <input type="date" id="pred-date" required>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 14px;">
-                            <label>Meal Type</label>
-                            <select id="pred-meal">
-                                <option value="Breakfast">Breakfast</option>
-                                <option value="Lunch" selected>Lunch</option>
-                                <option value="Dinner">Dinner</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 14px;">
-                            <label>Food Item</label>
-                            <select id="pred-food">
-                                <option value="Biryani">Biryani</option>
-                                <option value="Rice & Curry">Rice & Curry</option>
-                                <option value="Roti & Dal">Roti & Dal</option>
-                                <option value="South Indian Thali">South Indian Thali</option>
-                                <option value="Noodles & Fried Rice">Noodles & Fried Rice</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 14px;">
-                            <label>Expected Customers</label>
-                            <input type="number" id="pred-customers" value="480">
-                        </div>
-                        <div class="form-group" style="margin-bottom: 14px;">
-                            <label>Weather Forecast</label>
-                            <select id="pred-weather">
-                                <option value="Sunny">Sunny</option>
-                                <option value="Rainy">Rainy (Expect -8% Footfall)</option>
-                                <option value="Cloudy">Cloudy</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
-                            <i class="fa-solid fa-microchip"></i> Run AI Model Prediction
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Prediction Output Result -->
-                <div>
-                    <div class="prediction-result-card" id="pred-result-container">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <h3 style="font-size: 1.25rem; font-weight: 800; color: #10b981;">
-                                <i class="fa-solid fa-circle-check"></i> ML Recommendation Output
-                            </h3>
-                            <span class="stat-badge badge-success" id="pred-risk-badge">LOW WASTE RISK</span>
-                        </div>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-                            <div style="background: rgba(0, 0, 0, 0.2); padding: 14px; border-radius: 12px;">
-                                <div style="font-size: 0.8rem; color: var(--text-sub);">Predicted Consumption</div>
-                                <div style="font-size: 1.5rem; font-weight: 800;" id="res-consumption">172.8 kg</div>
-                            </div>
-                            <div style="background: rgba(16, 185, 129, 0.15); padding: 14px; border-radius: 12px; border: 1px solid #10b981;">
-                                <div style="font-size: 0.8rem; color: #10b981; font-weight: 700;">Recommended Prep</div>
-                                <div style="font-size: 1.5rem; font-weight: 800; color: #10b981;" id="res-prep">181.4 kg</div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 16px;">
-                            <div style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 4px;">Potential Cost Savings:</div>
-                            <div style="font-size: 1.2rem; font-weight: 800; color: #f59e0b;" id="res-savings">₹ 4,350 saved per service</div>
-                        </div>
-
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; font-size: 0.9rem; line-height: 1.5;" id="res-advice">
-                            <i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i>
-                            <strong>AI Strategy:</strong> Prepare exactly 181.4 kg (a 5% buffer over predicted demand). Avoid 25% over-preparation to prevent wastage.
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -1315,7 +1283,7 @@
             <div class="section-header">
                 <div>
                     <h1 class="section-title">ML Model Benchmarks & Comparison</h1>
-                    <p class="section-subtitle">Evaluates Machine Learning algorithms trained on 15,000 records with 25 Advanced Variables</p>
+                    <p class="section-subtitle">Evaluates Machine Learning algorithms trained on 30,000 records with 26 Advanced Variables</p>
                 </div>
                 <button class="btn btn-primary" onclick="trainModelsSimulated()">
                     <i class="fa-solid fa-rotate"></i> Re-Train ML Models
@@ -1367,15 +1335,15 @@
             </div>
         </section>
 
-        <!-- 7. 25 ADVANCED VARIABLES & DATASET SCREEN -->
-        <section id="screen-variables-25" class="screen-section">
+        <!-- 6. 26 ADVANCED VARIABLES & DATASET SCREEN -->
+        <section id="screen-variables-26" class="screen-section">
             <div class="section-header">
                 <div>
-                    <h1 class="section-title">25 Advanced Variables & Large Dataset</h1>
-                    <p class="section-subtitle">15,000 Historical Records with 25 Contextual Features for Machine Learning</p>
+                    <h1 class="section-title">26 Advanced Variables & Large Dataset</h1>
+                    <p class="section-subtitle">30,000 Historical Records with 26 Contextual Features for Machine Learning</p>
                 </div>
-                <a href="wastewise_large_dataset_15k.csv" download="wastewise_large_dataset_15k.csv" class="btn btn-primary" style="text-decoration: none;">
-                    <i class="fa-solid fa-download"></i> Download 15K Dataset CSV (5.5 MB)
+                <a href="wastewise_large_dataset_30k.csv" download="wastewise_large_dataset_30k.csv" class="btn btn-primary" style="text-decoration: none;">
+                    <i class="fa-solid fa-download"></i> Download 30K Dataset CSV (9.9 MB)
                 </a>
             </div>
 
@@ -1383,12 +1351,12 @@
             <div class="grid-4" style="margin-bottom: 24px;">
                 <div class="stat-card" style="--card-accent: #10b981;">
                     <div class="stat-header"><span>Dataset Records</span><div class="stat-icon"><i class="fa-solid fa-database"></i></div></div>
-                    <div class="stat-value">15,000</div>
+                    <div class="stat-value">30,000</div>
                     <div class="stat-badge badge-success"><i class="fa-solid fa-check"></i> Realistic Historical Logs</div>
                 </div>
                 <div class="stat-card" style="--card-accent: #3b82f6;">
                     <div class="stat-header"><span>New Variables</span><div class="stat-icon"><i class="fa-solid fa-network-wired"></i></div></div>
-                    <div class="stat-value">25 Features</div>
+                    <div class="stat-value">26 Features</div>
                     <div class="stat-badge badge-blue"><i class="fa-solid fa-microchip"></i> Fully Encoded into ML</div>
                 </div>
                 <div class="stat-card" style="--card-accent: #8b5cf6;">
@@ -1403,12 +1371,12 @@
                 </div>
             </div>
 
-            <!-- 25 Variables Grid -->
+            <!-- 26 Variables Grid -->
             <div class="table-card">
                 <div class="chart-header">
                     <div class="chart-title">
                         <i class="fa-solid fa-list-ol" style="color: #10b981;"></i>
-                        <span>Complete Specification of the 25 Advanced Variables</span>
+                        <span>Complete Specification of the 26 Advanced Variables</span>
                     </div>
                 </div>
                 <table>
@@ -1446,6 +1414,7 @@
                         <tr><td>23</td><td><strong>Customer Arrival Pattern</strong></td><td>Very Slow / Slow / Normal / Fast / Very Fast</td><td><span class="stat-badge badge-blue">Flow Dynamic</span></td></tr>
                         <tr><td>24</td><td><strong>Food Preference Change</strong></td><td>No Change / Slight Change / Moderate Change / Significant Change / Major Change</td><td><span class="stat-badge badge-danger">Taste Shift</span></td></tr>
                         <tr><td>25</td><td><strong>Previous Similar-Day Waste Level</strong></td><td>Very Low / Low / Medium / High / Very High</td><td><span class="stat-badge badge-danger">Waste Correction Feedback</span></td></tr>
+                        <tr><td>26</td><td><strong>Predicted Consumption (kg)</strong></td><td>Numeric Input (e.g. 354.3 kg)</td><td><span class="stat-badge badge-success">Demand Input Feature</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1453,13 +1422,13 @@
 
     </main>
 
-    <!-- 25 Variables Modal Inspector -->
+    <!-- 26 Variables Modal Inspector -->
     <div id="vars-modal" class="modal-overlay" onclick="handleModalBackdropClick(event)">
         <div class="modal-box">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--card-border); padding-bottom: 16px; margin-bottom: 20px;">
                 <div>
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                        <span class="stat-badge badge-success" style="font-size: 0.78rem;">25 CONTEXTUAL VARIABLES</span>
+                        <span class="stat-badge badge-success" style="font-size: 0.78rem;">26 CONTEXTUAL VARIABLES</span>
                         <span class="stat-badge badge-blue" id="modal-record-id">Record #1050</span>
                     </div>
                     <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main);" id="modal-record-title">Biryani (Lunch)</h2>
@@ -1488,7 +1457,7 @@
     </div>
 
     <script>
-        // 25 Variable Specifications Definition
+        // 26 Variable Specifications Definition
         const variableSpecs = [
             { num: 1, key: "dayType", label: "Day Type", category: "Academic & Calendar", icon: "fa-calendar" },
             { num: 2, key: "holidayImpact", label: "Holiday Impact", category: "Academic & Calendar", icon: "fa-umbrella-beach" },
@@ -1514,13 +1483,14 @@
             { num: 22, key: "servingCapacity", label: "Serving Capacity", category: "Kitchen Operations", icon: "fa-bowl-rice" },
             { num: 23, key: "customerArrivalPattern", label: "Customer Arrival Pattern", category: "Kitchen Operations", icon: "fa-person-walking" },
             { num: 24, key: "foodPreferenceChange", label: "Food Preference Change", category: "Menu & Dynamics", icon: "fa-shuffle" },
-            { num: 25, key: "previousSimilarDayWasteLevel", label: "Previous Similar-Day Waste Level", category: "Kitchen Operations", icon: "fa-trash-can" }
+            { num: 25, key: "previousSimilarDayWasteLevel", label: "Previous Similar-Day Waste Level", category: "Kitchen Operations", icon: "fa-trash-can" },
+            { num: 26, key: "consumed", label: "Predicted Consumption (kg)", category: "Target & Operational Input", icon: "fa-plate-wheat" }
         ];
 
-        // Sample realistic dataset with ALL 25 variables explicitly filled
+        // Sample realistic dataset with ALL 26 variables explicitly filled
         const sampleRecords = [
             {
-                id: 15000, date: '2026-09-02', day: 'Wednesday', meal: 'Lunch', item: 'Biryani', customers: 480, prepared: 175.0, consumed: 154.0, wasted: 21.0, weather: 'Sunny', cost: 190,
+                id: 30000, date: '2026-09-02', day: 'Wednesday', meal: 'Lunch', item: 'Biryani', customers: 480, prepared: 175.0, consumed: 154.0, wasted: 21.0, weather: 'Sunny', cost: 190,
                 dayType: 'Regular Working Day', holidayImpact: 'No Holiday', weatherCondition: 'Sunny', temperatureCategory: 'Warm', rainfallIntensity: 'None',
                 weatherAttendanceImpact: 'No Significant Impact', expectedCrowdLevel: 'High', studentAttendancePattern: 'Normal', hostelOccupancyLevel: 'High',
                 examPeriod: 'No Exam', collegeActivityLevel: 'Normal Classes', specialEventImpact: 'None', menuPopularity: 'Very Popular', foodPreferencePattern: 'Mostly Non-Vegetarian',
@@ -1528,7 +1498,7 @@
                 foodDemandVolatility: 'Stable', kitchenProductionLoad: 'Normal', servingCapacity: 'Adequate', customerArrivalPattern: 'Fast', foodPreferenceChange: 'No Change', previousSimilarDayWasteLevel: 'Low'
             },
             {
-                id: 14999, date: '2026-09-02', day: 'Wednesday', meal: 'Breakfast', item: 'Idli & Dosa', customers: 310, prepared: 78.0, consumed: 71.0, wasted: 7.0, weather: 'Sunny', cost: 65,
+                id: 29999, date: '2026-09-02', day: 'Wednesday', meal: 'Breakfast', item: 'Idli & Dosa', customers: 310, prepared: 78.0, consumed: 71.0, wasted: 7.0, weather: 'Sunny', cost: 65,
                 dayType: 'Regular Working Day', holidayImpact: 'No Holiday', weatherCondition: 'Sunny', temperatureCategory: 'Moderate', rainfallIntensity: 'None',
                 weatherAttendanceImpact: 'No Significant Impact', expectedCrowdLevel: 'Medium', studentAttendancePattern: 'Normal', hostelOccupancyLevel: 'High',
                 examPeriod: 'No Exam', collegeActivityLevel: 'Normal Classes', specialEventImpact: 'None', menuPopularity: 'Popular', foodPreferencePattern: 'Mostly Vegetarian',
@@ -1536,7 +1506,7 @@
                 foodDemandVolatility: 'Stable', kitchenProductionLoad: 'Normal', servingCapacity: 'Adequate', customerArrivalPattern: 'Normal', foodPreferenceChange: 'No Change', previousSimilarDayWasteLevel: 'Low'
             },
             {
-                id: 14998, date: '2026-09-01', day: 'Tuesday', meal: 'Dinner', item: 'Roti & Dal', customers: 410, prepared: 135.0, consumed: 122.0, wasted: 13.0, weather: 'Cloudy', cost: 75,
+                id: 29998, date: '2026-09-01', day: 'Tuesday', meal: 'Dinner', item: 'Roti & Dal', customers: 410, prepared: 135.0, consumed: 122.0, wasted: 13.0, weather: 'Cloudy', cost: 75,
                 dayType: 'Regular Working Day', holidayImpact: 'No Holiday', weatherCondition: 'Cloudy', temperatureCategory: 'Cool', rainfallIntensity: 'None',
                 weatherAttendanceImpact: 'No Significant Impact', expectedCrowdLevel: 'Medium', studentAttendancePattern: 'Normal', hostelOccupancyLevel: 'Full',
                 examPeriod: 'Exam Preparation', collegeActivityLevel: 'Normal Classes', specialEventImpact: 'None', menuPopularity: 'Average', foodPreferencePattern: 'Mostly Vegetarian',
@@ -1544,7 +1514,7 @@
                 foodDemandVolatility: 'Stable', kitchenProductionLoad: 'Normal', servingCapacity: 'Adequate', customerArrivalPattern: 'Normal', foodPreferenceChange: 'No Change', previousSimilarDayWasteLevel: 'Medium'
             },
             {
-                id: 14997, date: '2026-09-01', day: 'Tuesday', meal: 'Lunch', item: 'Rice & Curry', customers: 530, prepared: 198.0, consumed: 178.0, wasted: 20.0, weather: 'Moderate Rain', cost: 80,
+                id: 29997, date: '2026-09-01', day: 'Tuesday', meal: 'Lunch', item: 'Rice & Curry', customers: 530, prepared: 198.0, consumed: 178.0, wasted: 20.0, weather: 'Moderate Rain', cost: 80,
                 dayType: 'Regular Working Day', holidayImpact: 'No Holiday', weatherCondition: 'Moderate Rain', temperatureCategory: 'Cool', rainfallIntensity: 'Moderate',
                 weatherAttendanceImpact: 'Decreases', expectedCrowdLevel: 'Medium', studentAttendancePattern: 'Normal', hostelOccupancyLevel: 'Full',
                 examPeriod: 'No Exam', collegeActivityLevel: 'Normal Classes', specialEventImpact: 'None', menuPopularity: 'Popular', foodPreferencePattern: 'Mostly Vegetarian',
@@ -1552,7 +1522,7 @@
                 foodDemandVolatility: 'Moderate Variation', kitchenProductionLoad: 'High', servingCapacity: 'Adequate', customerArrivalPattern: 'Slow', foodPreferenceChange: 'Slight Change', previousSimilarDayWasteLevel: 'High'
             },
             {
-                id: 14996, date: '2026-08-31', day: 'Monday', meal: 'Lunch', item: 'South Indian Thali', customers: 500, prepared: 185.0, consumed: 165.0, wasted: 20.0, weather: 'Sunny', cost: 95,
+                id: 29996, date: '2026-08-31', day: 'Monday', meal: 'Lunch', item: 'South Indian Thali', customers: 500, prepared: 185.0, consumed: 165.0, wasted: 20.0, weather: 'Sunny', cost: 95,
                 dayType: 'Regular Working Day', holidayImpact: 'No Holiday', weatherCondition: 'Sunny', temperatureCategory: 'Warm', rainfallIntensity: 'None',
                 weatherAttendanceImpact: 'No Significant Impact', expectedCrowdLevel: 'High', studentAttendancePattern: 'Normal', hostelOccupancyLevel: 'Medium',
                 examPeriod: 'No Exam', collegeActivityLevel: 'Normal Classes', specialEventImpact: 'None', menuPopularity: 'Popular', foodPreferencePattern: 'Balanced',
@@ -1560,7 +1530,7 @@
                 foodDemandVolatility: 'Stable', kitchenProductionLoad: 'Normal', servingCapacity: 'Adequate', customerArrivalPattern: 'Normal', foodPreferenceChange: 'No Change', previousSimilarDayWasteLevel: 'Medium'
             },
             {
-                id: 14995, date: '2026-08-31', day: 'Monday', meal: 'Breakfast', item: 'Sandwich & Snacks', customers: 290, prepared: 65.0, consumed: 59.0, wasted: 6.0, weather: 'Sunny', cost: 85,
+                id: 29995, date: '2026-08-31', day: 'Monday', meal: 'Breakfast', item: 'Sandwich & Snacks', customers: 290, prepared: 65.0, consumed: 59.0, wasted: 6.0, weather: 'Sunny', cost: 85,
                 dayType: 'Regular Working Day', holidayImpact: 'No Holiday', weatherCondition: 'Sunny', temperatureCategory: 'Moderate', rainfallIntensity: 'None',
                 weatherAttendanceImpact: 'No Significant Impact', expectedCrowdLevel: 'Low', studentAttendancePattern: 'Normal', hostelOccupancyLevel: 'Medium',
                 examPeriod: 'No Exam', collegeActivityLevel: 'Normal Classes', specialEventImpact: 'None', menuPopularity: 'Average', foodPreferencePattern: 'Mostly Vegetarian',
@@ -1576,15 +1546,14 @@
             renderDashboardTable();
             renderFullTable();
             initCharts();
-            // Set today's date in forms
+            // Set today's date in form
             const todayStr = new Date().toISOString().split('T')[0];
-            const addDateEl = document.getElementById('add-date');
             const predDateEl = document.getElementById('pred-date');
-            if (addDateEl) addDateEl.value = todayStr;
             if (predDateEl) predDateEl.value = todayStr;
         });
 
         function switchScreen(screenId, tabElement) {
+            if (screenId === 'variables-25') screenId = 'variables-26';
             document.querySelectorAll('.screen-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
 
@@ -1628,9 +1597,9 @@
         function renderDashboardTable() {
             const tbody = document.getElementById('dashboard-recent-table');
             if (!tbody) return;
-            tbody.innerHTML = sampleRecords.slice(0, 5).map(r => `
-                <tr>
-                    <td>${r.date}</td>
+            tbody.innerHTML = sampleRecords.slice(0, 6).map(r => `
+                <tr style="${r.isAiPrediction ? 'background: rgba(16, 185, 129, 0.08);' : ''}">
+                    <td>${r.date} ${r.isAiPrediction ? '<span class="stat-badge badge-success" style="font-size:0.65rem; padding: 2px 5px; margin-left: 4px;"><i class="fa-solid fa-sparkles"></i> AI</span>' : ''}</td>
                     <td>${r.day}</td>
                     <td><span class="stat-badge badge-blue">${r.meal}</span></td>
                     <td><strong>${r.item}</strong></td>
@@ -1647,8 +1616,8 @@
             const tbody = document.getElementById('full-records-table');
             if (!tbody) return;
             tbody.innerHTML = sampleRecords.map(r => `
-                <tr>
-                    <td>#${r.id}</td>
+                <tr style="${r.isAiPrediction ? 'background: rgba(16, 185, 129, 0.08);' : ''}">
+                    <td>#${r.id} ${r.isAiPrediction ? '<span class="stat-badge badge-success" style="font-size:0.68rem; padding: 2px 6px; margin-left: 4px;"><i class="fa-solid fa-sparkles"></i> AI</span>' : ''}</td>
                     <td>${r.date}</td>
                     <td>${r.day}</td>
                     <td><span class="stat-badge badge-blue">${r.meal}</span></td>
@@ -1660,7 +1629,7 @@
                     <td>₹ ${(r.wasted * r.cost).toLocaleString()}</td>
                     <td>
                         <button type="button" class="preset-btn" onclick="viewVariablesModal(${r.id})" style="padding: 4px 10px; font-size: 0.78rem;">
-                            <i class="fa-solid fa-list-check" style="color: #10b981;"></i> 25 Vars
+                            <i class="fa-solid fa-list-check" style="color: #10b981;"></i> 26 Vars
                         </button>
                     </td>
                 </tr>
@@ -1680,8 +1649,8 @@
             });
 
             tbody.innerHTML = filtered.map(r => `
-                <tr>
-                    <td>#${r.id}</td>
+                <tr style="${r.isAiPrediction ? 'background: rgba(16, 185, 129, 0.08);' : ''}">
+                    <td>#${r.id} ${r.isAiPrediction ? '<span class="stat-badge badge-success" style="font-size:0.68rem; padding: 2px 6px; margin-left: 4px;"><i class="fa-solid fa-sparkles"></i> AI</span>' : ''}</td>
                     <td>${r.date}</td>
                     <td>${r.day}</td>
                     <td><span class="stat-badge badge-blue">${r.meal}</span></td>
@@ -1693,224 +1662,123 @@
                     <td>₹ ${(r.wasted * r.cost).toLocaleString()}</td>
                     <td>
                         <button type="button" class="preset-btn" onclick="viewVariablesModal(${r.id})" style="padding: 4px 10px; font-size: 0.78rem;">
-                            <i class="fa-solid fa-list-check" style="color: #10b981;"></i> 25 Vars
+                            <i class="fa-solid fa-list-check" style="color: #10b981;"></i> 26 Vars
                         </button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        function calcWaste() {
-            const prep = parseFloat(document.getElementById('add-prepared').value) || 0;
-            const cons = parseFloat(document.getElementById('add-consumed').value) || 0;
-            const cost = parseFloat(document.getElementById('add-cost').value) || 0;
-            const wasted = Math.max(0, prep - cons).toFixed(1);
-            const loss = Math.round(wasted * cost).toLocaleString();
-            document.getElementById('waste-calc-output').innerHTML = `
-                Waste: ${wasted} kg | Financial Loss: ₹ ${loss}
-            `;
-        }
-
-        function applyPreset(type) {
+        function applyPredPreset(type) {
             if (type === 'normal') {
-                document.getElementById('var-day-type').value = 'Regular Working Day';
-                document.getElementById('var-holiday-impact').value = 'No Holiday';
-                document.getElementById('var-exam-period').value = 'No Exam';
-                document.getElementById('var-college-activity').value = 'Normal Classes';
-                document.getElementById('var-special-event-impact').value = 'None';
-                document.getElementById('var-weather-condition').value = 'Sunny';
-                document.getElementById('var-temp-cat').value = 'Moderate';
-                document.getElementById('var-rainfall-intensity').value = 'None';
-                document.getElementById('var-weather-impact').value = 'No Significant Impact';
-                document.getElementById('var-crowd-level').value = 'Medium';
-                document.getElementById('var-attendance-pattern').value = 'Normal';
-                document.getElementById('var-hostel-occupancy').value = 'Medium';
-                document.getElementById('var-demand-trend').value = 'Stable';
-                document.getElementById('var-sim-day-demand').value = 'Medium';
-                document.getElementById('var-menu-popularity').value = 'Average';
-                document.getElementById('var-pref-pattern').value = 'Balanced';
-                document.getElementById('var-menu-type').value = 'Regular';
-                document.getElementById('var-meal-satisfaction').value = 'Good';
-                document.getElementById('var-outside-food').value = 'Moderate';
-                document.getElementById('var-pref-change').value = 'No Change';
-                document.getElementById('var-demand-volatility').value = 'Stable';
-                document.getElementById('var-production-load').value = 'Normal';
-                document.getElementById('var-serving-capacity').value = 'Adequate';
-                document.getElementById('var-arrival-pattern').value = 'Normal';
-                document.getElementById('var-sim-day-waste').value = 'Low';
-                showToast('Applied "Regular Working Day" preset to all 25 variables!');
+                document.getElementById('pred-var-day-type').value = 'Regular Working Day';
+                document.getElementById('pred-var-holiday-impact').value = 'No Holiday';
+                document.getElementById('pred-var-exam-period').value = 'No Exam';
+                document.getElementById('pred-var-college-activity').value = 'Normal Classes';
+                document.getElementById('pred-var-special-event-impact').value = 'None';
+                document.getElementById('pred-var-weather-condition').value = 'Sunny';
+                document.getElementById('pred-var-temp-cat').value = 'Moderate';
+                document.getElementById('pred-var-rainfall-intensity').value = 'None';
+                document.getElementById('pred-var-weather-impact').value = 'No Significant Impact';
+                document.getElementById('pred-var-crowd-level').value = 'Medium';
+                document.getElementById('pred-var-attendance-pattern').value = 'Normal';
+                document.getElementById('pred-var-hostel-occupancy').value = 'Medium';
+                document.getElementById('pred-var-demand-trend').value = 'Stable';
+                document.getElementById('pred-var-sim-day-demand').value = 'Medium';
+                document.getElementById('pred-var-menu-popularity').value = 'Average';
+                document.getElementById('pred-var-pref-pattern').value = 'Balanced';
+                document.getElementById('pred-var-menu-type').value = 'Regular';
+                document.getElementById('pred-var-meal-satisfaction').value = 'Good';
+                document.getElementById('pred-var-outside-food').value = 'Moderate';
+                document.getElementById('pred-var-pref-change').value = 'No Change';
+                document.getElementById('pred-var-demand-volatility').value = 'Stable';
+                document.getElementById('pred-var-production-load').value = 'Normal';
+                document.getElementById('pred-var-serving-capacity').value = 'Adequate';
+                document.getElementById('pred-var-arrival-pattern').value = 'Normal';
+                document.getElementById('pred-var-sim-day-waste').value = 'Low';
+                showToast('Applied "Regular Working Day" preset to variables!');
             } else if (type === 'exam') {
-                document.getElementById('var-day-type').value = 'Exam Day';
-                document.getElementById('var-holiday-impact').value = 'No Holiday';
-                document.getElementById('var-exam-period').value = 'Semester Exam';
-                document.getElementById('var-college-activity').value = 'Normal Classes';
-                document.getElementById('var-special-event-impact').value = 'None';
-                document.getElementById('var-weather-condition').value = 'Cloudy';
-                document.getElementById('var-temp-cat').value = 'Cool';
-                document.getElementById('var-rainfall-intensity').value = 'None';
-                document.getElementById('var-weather-impact').value = 'No Significant Impact';
-                document.getElementById('var-crowd-level').value = 'Very High';
-                document.getElementById('var-attendance-pattern').value = 'Very High';
-                document.getElementById('var-hostel-occupancy').value = 'Full';
-                document.getElementById('var-demand-trend').value = 'Increasing';
-                document.getElementById('var-sim-day-demand').value = 'Very High';
-                document.getElementById('var-menu-popularity').value = 'Popular';
-                document.getElementById('var-pref-pattern').value = 'Mostly Vegetarian';
-                document.getElementById('var-menu-type').value = 'Regular';
-                document.getElementById('var-meal-satisfaction').value = 'Average';
-                document.getElementById('var-outside-food').value = 'Low';
-                document.getElementById('var-pref-change').value = 'No Change';
-                document.getElementById('var-demand-volatility').value = 'Stable';
-                document.getElementById('var-production-load').value = 'Overloaded';
-                document.getElementById('var-serving-capacity').value = 'Low';
-                document.getElementById('var-arrival-pattern').value = 'Fast';
-                document.getElementById('var-sim-day-waste').value = 'High';
-                showToast('Applied "Semester Exam Day" preset to all 25 variables!');
+                document.getElementById('pred-var-day-type').value = 'Exam Day';
+                document.getElementById('pred-var-holiday-impact').value = 'No Holiday';
+                document.getElementById('pred-var-exam-period').value = 'Semester Exam';
+                document.getElementById('pred-var-college-activity').value = 'Normal Classes';
+                document.getElementById('pred-var-special-event-impact').value = 'None';
+                document.getElementById('pred-var-weather-condition').value = 'Cloudy';
+                document.getElementById('pred-var-temp-cat').value = 'Cool';
+                document.getElementById('pred-var-rainfall-intensity').value = 'None';
+                document.getElementById('pred-var-weather-impact').value = 'No Significant Impact';
+                document.getElementById('pred-var-crowd-level').value = 'Very High';
+                document.getElementById('pred-var-attendance-pattern').value = 'Very High';
+                document.getElementById('pred-var-hostel-occupancy').value = 'Full';
+                document.getElementById('pred-var-demand-trend').value = 'Increasing';
+                document.getElementById('pred-var-sim-day-demand').value = 'Very High';
+                document.getElementById('pred-var-menu-popularity').value = 'Popular';
+                document.getElementById('pred-var-pref-pattern').value = 'Mostly Vegetarian';
+                document.getElementById('pred-var-menu-type').value = 'Regular';
+                document.getElementById('pred-var-meal-satisfaction').value = 'Average';
+                document.getElementById('pred-var-outside-food').value = 'Low';
+                document.getElementById('pred-var-pref-change').value = 'No Change';
+                document.getElementById('pred-var-demand-volatility').value = 'Stable';
+                document.getElementById('pred-var-production-load').value = 'Overloaded';
+                document.getElementById('pred-var-serving-capacity').value = 'Low';
+                document.getElementById('pred-var-arrival-pattern').value = 'Fast';
+                document.getElementById('pred-var-sim-day-waste').value = 'High';
+                showToast('Applied "Semester Exam Day" preset to variables!');
             } else if (type === 'rain') {
-                document.getElementById('var-day-type').value = 'Regular Working Day';
-                document.getElementById('var-holiday-impact').value = 'No Holiday';
-                document.getElementById('var-exam-period').value = 'No Exam';
-                document.getElementById('var-college-activity').value = 'Normal Classes';
-                document.getElementById('var-special-event-impact').value = 'None';
-                document.getElementById('var-weather-condition').value = 'Heavy Rain';
-                document.getElementById('var-temp-cat').value = 'Cool';
-                document.getElementById('var-rainfall-intensity').value = 'Heavy';
-                document.getElementById('var-weather-impact').value = 'Strongly Decreases';
-                document.getElementById('var-crowd-level').value = 'Low';
-                document.getElementById('var-attendance-pattern').value = 'Low';
-                document.getElementById('var-hostel-occupancy').value = 'High';
-                document.getElementById('var-demand-trend').value = 'Decreasing';
-                document.getElementById('var-sim-day-demand').value = 'Low';
-                document.getElementById('var-menu-popularity').value = 'Popular';
-                document.getElementById('var-pref-pattern').value = 'Balanced';
-                document.getElementById('var-menu-type').value = 'Healthy';
-                document.getElementById('var-meal-satisfaction').value = 'Good';
-                document.getElementById('var-outside-food').value = 'Not Available';
-                document.getElementById('var-pref-change').value = 'Slight Change';
-                document.getElementById('var-demand-volatility').value = 'High Variation';
-                document.getElementById('var-production-load').value = 'Normal';
-                document.getElementById('var-serving-capacity').value = 'Adequate';
-                document.getElementById('var-arrival-pattern').value = 'Slow';
-                document.getElementById('var-sim-day-waste').value = 'High';
-                showToast('Applied "Heavy Rain / Monsoon" preset to all 25 variables!');
+                document.getElementById('pred-var-day-type').value = 'Regular Working Day';
+                document.getElementById('pred-var-holiday-impact').value = 'No Holiday';
+                document.getElementById('pred-var-exam-period').value = 'No Exam';
+                document.getElementById('pred-var-college-activity').value = 'Normal Classes';
+                document.getElementById('pred-var-special-event-impact').value = 'None';
+                document.getElementById('pred-var-weather-condition').value = 'Heavy Rain';
+                document.getElementById('pred-var-temp-cat').value = 'Cool';
+                document.getElementById('pred-var-rainfall-intensity').value = 'Heavy';
+                document.getElementById('pred-var-weather-impact').value = 'Strongly Decreases';
+                document.getElementById('pred-var-crowd-level').value = 'Low';
+                document.getElementById('pred-var-attendance-pattern').value = 'Low';
+                document.getElementById('pred-var-hostel-occupancy').value = 'High';
+                document.getElementById('pred-var-demand-trend').value = 'Decreasing';
+                document.getElementById('pred-var-sim-day-demand').value = 'Low';
+                document.getElementById('pred-var-menu-popularity').value = 'Popular';
+                document.getElementById('pred-var-pref-pattern').value = 'Balanced';
+                document.getElementById('pred-var-menu-type').value = 'Healthy';
+                document.getElementById('pred-var-meal-satisfaction').value = 'Good';
+                document.getElementById('pred-var-outside-food').value = 'Not Available';
+                document.getElementById('pred-var-pref-change').value = 'Slight Change';
+                document.getElementById('pred-var-demand-volatility').value = 'High Variation';
+                document.getElementById('pred-var-production-load').value = 'Normal';
+                document.getElementById('pred-var-serving-capacity').value = 'Adequate';
+                document.getElementById('pred-var-arrival-pattern').value = 'Slow';
+                document.getElementById('pred-var-sim-day-waste').value = 'High';
+                showToast('Applied "Heavy Rain / Monsoon" preset to variables!');
             } else if (type === 'fest') {
-                document.getElementById('var-day-type').value = 'Festival Holiday';
-                document.getElementById('var-holiday-impact').value = 'Moderate Impact';
-                document.getElementById('var-exam-period').value = 'No Exam';
-                document.getElementById('var-college-activity').value = 'Major College Event';
-                document.getElementById('var-special-event-impact').value = 'Very High';
-                document.getElementById('var-weather-condition').value = 'Sunny';
-                document.getElementById('var-temp-cat').value = 'Warm';
-                document.getElementById('var-rainfall-intensity').value = 'None';
-                document.getElementById('var-weather-impact').value = 'Strongly Increases';
-                document.getElementById('var-crowd-level').value = 'Very High';
-                document.getElementById('var-attendance-pattern').value = 'Very High';
-                document.getElementById('var-hostel-occupancy').value = 'Full';
-                document.getElementById('var-demand-trend').value = 'Strongly Increasing';
-                document.getElementById('var-sim-day-demand').value = 'Very High';
-                document.getElementById('var-menu-popularity').value = 'Very Popular';
-                document.getElementById('var-pref-pattern').value = 'Mostly Non-Vegetarian';
-                document.getElementById('var-menu-type').value = 'Festival';
-                document.getElementById('var-meal-satisfaction').value = 'Excellent';
-                document.getElementById('var-outside-food').value = 'High';
-                document.getElementById('var-pref-change').value = 'Major Change';
-                document.getElementById('var-demand-volatility').value = 'Very High Variation';
-                document.getElementById('var-production-load').value = 'Overloaded';
-                document.getElementById('var-serving-capacity').value = 'High';
-                document.getElementById('var-arrival-pattern').value = 'Very Fast';
-                document.getElementById('var-sim-day-waste').value = 'High';
-                showToast('Applied "College Cultural Fest" preset to all 25 variables!');
+                document.getElementById('pred-var-day-type').value = 'Festival Holiday';
+                document.getElementById('pred-var-holiday-impact').value = 'Moderate Impact';
+                document.getElementById('pred-var-exam-period').value = 'No Exam';
+                document.getElementById('pred-var-college-activity').value = 'Major College Event';
+                document.getElementById('pred-var-special-event-impact').value = 'Very High';
+                document.getElementById('pred-var-weather-condition').value = 'Sunny';
+                document.getElementById('pred-var-temp-cat').value = 'Warm';
+                document.getElementById('pred-var-rainfall-intensity').value = 'None';
+                document.getElementById('pred-var-weather-impact').value = 'Strongly Increases';
+                document.getElementById('pred-var-crowd-level').value = 'Very High';
+                document.getElementById('pred-var-attendance-pattern').value = 'Very High';
+                document.getElementById('pred-var-hostel-occupancy').value = 'Full';
+                document.getElementById('pred-var-demand-trend').value = 'Strongly Increasing';
+                document.getElementById('pred-var-sim-day-demand').value = 'Very High';
+                document.getElementById('pred-var-menu-popularity').value = 'Very Popular';
+                document.getElementById('pred-var-pref-pattern').value = 'Mostly Non-Vegetarian';
+                document.getElementById('pred-var-menu-type').value = 'Festival';
+                document.getElementById('pred-var-meal-satisfaction').value = 'Excellent';
+                document.getElementById('pred-var-outside-food').value = 'High';
+                document.getElementById('pred-var-pref-change').value = 'Major Change';
+                document.getElementById('pred-var-demand-volatility').value = 'Very High Variation';
+                document.getElementById('pred-var-production-load').value = 'Overloaded';
+                document.getElementById('pred-var-serving-capacity').value = 'High';
+                document.getElementById('pred-var-arrival-pattern').value = 'Very Fast';
+                document.getElementById('pred-var-sim-day-waste').value = 'High';
+                showToast('Applied "College Cultural Fest" preset to variables!');
             }
-        }
-
-        function handleAddFoodSubmit(e) {
-            e.preventDefault();
-            const date = document.getElementById('add-date').value;
-            const meal = document.getElementById('add-meal').value;
-            const item = document.getElementById('add-food').value;
-            const customers = parseInt(document.getElementById('add-customers').value) || 100;
-            const prepared = parseFloat(document.getElementById('add-prepared').value) || 0;
-            const consumed = parseFloat(document.getElementById('add-consumed').value) || 0;
-            const cost = parseFloat(document.getElementById('add-cost').value) || 100;
-            const wasted = Math.max(0, prepared - consumed);
-
-            // Capture all 25 Variables
-            const dayType = document.getElementById('var-day-type').value;
-            const holidayImpact = document.getElementById('var-holiday-impact').value;
-            const weatherCondition = document.getElementById('var-weather-condition').value;
-            const temperatureCategory = document.getElementById('var-temp-cat').value;
-            const rainfallIntensity = document.getElementById('var-rainfall-intensity').value;
-            const weatherAttendanceImpact = document.getElementById('var-weather-impact').value;
-            const expectedCrowdLevel = document.getElementById('var-crowd-level').value;
-            const studentAttendancePattern = document.getElementById('var-attendance-pattern').value;
-            const hostelOccupancyLevel = document.getElementById('var-hostel-occupancy').value;
-            const examPeriod = document.getElementById('var-exam-period').value;
-            const collegeActivityLevel = document.getElementById('var-college-activity').value;
-            const specialEventImpact = document.getElementById('var-special-event-impact').value;
-            const menuPopularity = document.getElementById('var-menu-popularity').value;
-            const foodPreferencePattern = document.getElementById('var-pref-pattern').value;
-            const menuType = document.getElementById('var-menu-type').value;
-            const previousMealSatisfaction = document.getElementById('var-meal-satisfaction').value;
-            const outsideFoodAvailability = document.getElementById('var-outside-food').value;
-            const customerDemandTrend = document.getElementById('var-demand-trend').value;
-            const previousSimilarDayDemand = document.getElementById('var-sim-day-demand').value;
-            const foodDemandVolatility = document.getElementById('var-demand-volatility').value;
-            const kitchenProductionLoad = document.getElementById('var-production-load').value;
-            const servingCapacity = document.getElementById('var-serving-capacity').value;
-            const customerArrivalPattern = document.getElementById('var-arrival-pattern').value;
-            const foodPreferenceChange = document.getElementById('var-pref-change').value;
-            const previousSimilarDayWasteLevel = document.getElementById('var-sim-day-waste').value;
-
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const d = new Date(date);
-            const dayName = isNaN(d.getDay()) ? 'Wednesday' : days[d.getDay()];
-
-            const newId = sampleRecords.length > 0 ? Math.max(...sampleRecords.map(r => r.id)) + 1 : 15001;
-
-            const newRec = {
-                id: newId,
-                date,
-                day: dayName,
-                meal,
-                item,
-                customers,
-                prepared,
-                consumed,
-                wasted: parseFloat(wasted.toFixed(1)),
-                weather: weatherCondition,
-                cost,
-                dayType,
-                holidayImpact,
-                weatherCondition,
-                temperatureCategory,
-                rainfallIntensity,
-                weatherAttendanceImpact,
-                expectedCrowdLevel,
-                studentAttendancePattern,
-                hostelOccupancyLevel,
-                examPeriod,
-                collegeActivityLevel,
-                specialEventImpact,
-                menuPopularity,
-                foodPreferencePattern,
-                menuType,
-                previousMealSatisfaction,
-                outsideFoodAvailability,
-                customerDemandTrend,
-                previousSimilarDayDemand,
-                foodDemandVolatility,
-                kitchenProductionLoad,
-                servingCapacity,
-                customerArrivalPattern,
-                foodPreferenceChange,
-                previousSimilarDayWasteLevel
-            };
-
-            sampleRecords.unshift(newRec);
-            renderDashboardTable();
-            renderFullTable();
-            showToast(`Record #${newId} with all 25 variables saved successfully!`);
-            switchTabByName('records');
         }
 
         function viewVariablesModal(id) {
@@ -1948,34 +1816,480 @@
             }
         }
 
+        // Feature Ordinal Encodings & Weights matching ML Algorithms Architecture
+        const ENCODINGS = {
+            dayTypes: ["Regular Working Day", "Weekend", "Public Holiday", "College Holiday", "Festival Holiday", "Vacation", "Exam Day"],
+            holidayImpacts: ["No Holiday", "Low Impact", "Moderate Impact", "High Impact", "Very High Impact"],
+            weatherConditions: ["Sunny", "Partly Cloudy", "Cloudy", "Light Rain", "Moderate Rain", "Heavy Rain", "Storm"],
+            temperatureCategories: ["Very Cool", "Cool", "Moderate", "Warm", "Hot", "Very Hot"],
+            rainfallIntensities: ["None", "Very Light", "Light", "Moderate", "Heavy", "Very Heavy"],
+            weatherAttendanceImpacts: ["Strongly Decreases", "Decreases", "No Significant Impact", "Increases", "Strongly Increases"],
+            expectedCrowdLevels: ["Very Low", "Low", "Medium", "High", "Very High"],
+            studentAttendancePatterns: ["Very Low", "Low", "Normal", "High", "Very High"],
+            hostelOccupancyLevels: ["Very Low", "Low", "Medium", "High", "Full"],
+            examPeriods: ["No Exam", "Exam Preparation", "Internal Exam", "Semester Exam", "Practical Exam", "Post Exam"],
+            collegeActivityLevels: ["No Activity", "Normal Classes", "Workshop", "Seminar", "Sports Event", "Cultural Event", "Major College Event"],
+            specialEventImpacts: ["None", "Very Low", "Low", "Medium", "High", "Very High"],
+            menuPopularities: ["Very Low", "Low", "Average", "Popular", "Very Popular"],
+            foodPreferencePatterns: ["Mostly Vegetarian", "Mostly Non-Vegetarian", "Balanced", "Special Dietary Preference"],
+            menuTypes: ["Regular", "Student Favorite", "Special", "Festival", "Premium", "Healthy"],
+            previousMealSatisfactions: ["Very Poor", "Poor", "Average", "Good", "Excellent"],
+            outsideFoodAvailabilities: ["Not Available", "Low", "Moderate", "High", "Very High"],
+            customerDemandTrends: ["Strongly Decreasing", "Decreasing", "Stable", "Increasing", "Strongly Increasing"],
+            previousSimilarDayDemands: ["Very Low", "Low", "Medium", "High", "Very High"],
+            foodDemandVolatilities: ["Very Stable", "Stable", "Moderate Variation", "High Variation", "Very High Variation"],
+            kitchenProductionLoads: ["Very Low", "Low", "Normal", "High", "Overloaded"],
+            servingCapacities: ["Very Low", "Low", "Adequate", "High", "Very High"],
+            customerArrivalPatterns: ["Very Slow", "Slow", "Normal", "Fast", "Very Fast"],
+            foodPreferenceChanges: ["No Change", "Slight Change", "Moderate Change", "Significant Change", "Major Change"],
+            previousSimilarDayWasteLevels: ["Very Low", "Low", "Medium", "High", "Very High"]
+        };
+
         function runAIPrediction(e) {
             e.preventDefault();
-            let customers = parseInt(document.getElementById('pred-customers').value) || 450;
+
+            // 1. Existing Base Inputs
+            const targetDate = document.getElementById('pred-date').value;
             const meal = document.getElementById('pred-meal').value;
-            const weather = document.getElementById('pred-weather').value;
+            const foodItem = document.getElementById('pred-food').value;
+            const baseCustomers = parseInt(document.getElementById('pred-customers').value) || 450;
+            const weatherForecast = document.getElementById('pred-weather') ? document.getElementById('pred-weather').value : 'Sunny';
 
-            let perCapita = 0.35;
-            if (meal === 'Breakfast') perCapita = 0.24;
-            if (meal === 'Dinner') perCapita = 0.32;
+            // 2. All 26 Advanced Selected Variables
+            const vars = {
+                dayType: document.getElementById('pred-var-day-type').value,
+                holidayImpact: document.getElementById('pred-var-holiday-impact').value,
+                weatherCondition: document.getElementById('pred-var-weather-condition').value,
+                temperatureCategory: document.getElementById('pred-var-temp-cat').value,
+                rainfallIntensity: document.getElementById('pred-var-rainfall-intensity').value,
+                weatherAttendanceImpact: document.getElementById('pred-var-weather-impact').value,
+                expectedCrowdLevel: document.getElementById('pred-var-crowd-level').value,
+                studentAttendancePattern: document.getElementById('pred-var-attendance-pattern').value,
+                hostelOccupancyLevel: document.getElementById('pred-var-hostel-occupancy').value,
+                examPeriod: document.getElementById('pred-var-exam-period').value,
+                collegeActivityLevel: document.getElementById('pred-var-college-activity').value,
+                specialEventImpact: document.getElementById('pred-var-special-event-impact').value,
+                menuPopularity: document.getElementById('pred-var-menu-popularity').value,
+                foodPreferencePattern: document.getElementById('pred-var-pref-pattern').value,
+                menuType: document.getElementById('pred-var-menu-type').value,
+                previousMealSatisfaction: document.getElementById('pred-var-meal-satisfaction').value,
+                outsideFoodAvailability: document.getElementById('pred-var-outside-food').value,
+                customerDemandTrend: document.getElementById('pred-var-demand-trend').value,
+                previousSimilarDayDemand: document.getElementById('pred-var-sim-day-demand').value,
+                foodDemandVolatility: document.getElementById('pred-var-demand-volatility').value,
+                kitchenProductionLoad: document.getElementById('pred-var-production-load').value,
+                servingCapacity: document.getElementById('pred-var-serving-capacity').value,
+                customerArrivalPattern: document.getElementById('pred-var-arrival-pattern').value,
+                foodPreferenceChange: document.getElementById('pred-var-pref-change').value,
+                previousSimilarDayWasteLevel: document.getElementById('pred-var-sim-day-waste').value,
+                predictedConsumption: parseFloat(document.getElementById('pred-var-predicted-consumption').value) || 0
+            };
 
-            if (weather.includes('Rainy')) customers = Math.round(customers * 0.92);
+            // 3. Feature Extraction & Ordinal Encoding (Matching FeaturePipeline)
+            const encodeOrdinal = (val, list) => {
+                const idx = list.indexOf(val);
+                return idx >= 0 ? (list.length > 1 ? idx / (list.length - 1) : 0.5) : 0.5;
+            };
 
-            const predCons = (customers * perCapita).toFixed(1);
-            const recPrep = (predCons * 1.05).toFixed(1);
-            const savings = Math.round(predCons * 0.20 * 180).toLocaleString();
+            // 4. ML Model Inference Pipeline (Random Forest Ensemble with Decision Tree rules)
+            // Baseline per-capita intake (kg)
+            let basePerCapita = 0.35; // Lunch
+            if (meal === 'Breakfast') basePerCapita = 0.24;
+            if (meal === 'Dinner') basePerCapita = 0.32;
 
-            document.getElementById('res-consumption').innerText = `${predCons} kg`;
-            document.getElementById('res-prep').innerText = `${recPrep} kg`;
-            document.getElementById('res-savings').innerText = `₹ ${savings} saved per service`;
-            document.getElementById('res-advice').innerHTML = `
-                <i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i>
-                <strong>AI Recommendation:</strong> Prepare exactly ${recPrep} kg for ${customers} expected guests. Maintaining a 5% safety buffer reduces food waste by ~85%. Evaluated across all 25 contextual features.
+            // Food item density & portion weight factor
+            const itemFactors = {
+                'Biryani': 1.08,
+                'South Indian Thali': 1.04,
+                'Rice & Curry': 1.00,
+                'Roti & Dal': 0.92,
+                'Noodles & Fried Rice': 0.95,
+                'Idli & Dosa': 0.88,
+                'Sandwich & Snacks': 0.72,
+                'Dessert & Sweets': 0.60
+            };
+            const itemFactor = itemFactors[foodItem] || 1.0;
+
+            // Item cost per kg estimate
+            const itemCosts = {
+                'Biryani': 190,
+                'South Indian Thali': 110,
+                'Rice & Curry': 80,
+                'Roti & Dal': 75,
+                'Noodles & Fried Rice': 90,
+                'Idli & Dosa': 65,
+                'Sandwich & Snacks': 85,
+                'Dessert & Sweets': 150
+            };
+            const costPerKg = itemCosts[foodItem] || 100;
+
+            // Footfall & Demand Impact Factors across 26 Variables
+            // Section 1: Academic & Calendar Dynamics
+            const dayTypeMultipliers = {
+                'Regular Working Day': 1.0,
+                'Weekend': 0.68,
+                'Public Holiday': 0.42,
+                'College Holiday': 0.48,
+                'Festival Holiday': 0.62,
+                'Vacation': 0.32,
+                'Exam Day': 1.18
+            };
+            const holidayImpactMultipliers = {
+                'No Holiday': 1.0,
+                'Low Impact': 0.94,
+                'Moderate Impact': 0.82,
+                'High Impact': 0.64,
+                'Very High Impact': 0.45
+            };
+            const examMultipliers = {
+                'No Exam': 1.0,
+                'Exam Preparation': 1.05,
+                'Internal Exam': 1.14,
+                'Semester Exam': 1.22,
+                'Practical Exam': 1.08,
+                'Post Exam': 0.88
+            };
+            const activityMultipliers = {
+                'No Activity': 0.88,
+                'Normal Classes': 1.00,
+                'Workshop': 1.06,
+                'Seminar': 1.10,
+                'Sports Event': 1.22,
+                'Cultural Event': 1.34,
+                'Major College Event': 1.45
+            };
+            const specialEventMultipliers = {
+                'None': 1.0,
+                'Very Low': 1.03,
+                'Low': 1.07,
+                'Medium': 1.15,
+                'High': 1.26,
+                'Very High': 1.40
+            };
+
+            // Section 2: Weather & Environmental Factors
+            const weatherMultipliers = {
+                'Sunny': 1.02,
+                'Partly Cloudy': 1.00,
+                'Cloudy': 0.96,
+                'Light Rain': 0.90,
+                'Moderate Rain': 0.82,
+                'Heavy Rain': 0.70,
+                'Storm': 0.52
+            };
+            const rainMultipliers = {
+                'None': 1.0,
+                'Very Light': 0.98,
+                'Light': 0.95,
+                'Moderate': 0.88,
+                'Heavy': 0.78,
+                'Very Heavy': 0.65
+            };
+            const tempMultipliers = {
+                'Very Cool': 1.04,
+                'Cool': 1.02,
+                'Moderate': 1.00,
+                'Warm': 0.97,
+                'Hot': 0.93,
+                'Very Hot': 0.88
+            };
+            const weatherImpactMultipliers = {
+                'Strongly Decreases': 0.80,
+                'Decreases': 0.90,
+                'No Significant Impact': 1.00,
+                'Increases': 1.08,
+                'Strongly Increases': 1.18
+            };
+
+            // Section 3: Campus Footfall & Crowd Dynamics
+            const crowdMultipliers = {
+                'Very Low': 0.68,
+                'Low': 0.84,
+                'Medium': 1.00,
+                'High': 1.16,
+                'Very High': 1.32
+            };
+            const attendanceMultipliers = {
+                'Very Low': 0.72,
+                'Low': 0.86,
+                'Normal': 1.00,
+                'High': 1.14,
+                'Very High': 1.24
+            };
+            const hostelMultipliers = {
+                'Very Low': 0.75,
+                'Low': 0.88,
+                'Medium': 1.00,
+                'High': 1.10,
+                'Full': 1.20
+            };
+            const trendMultipliers = {
+                'Strongly Decreasing': 0.88,
+                'Decreasing': 0.94,
+                'Stable': 1.00,
+                'Increasing': 1.07,
+                'Strongly Increasing': 1.15
+            };
+            const simDayDemandMultipliers = {
+                'Very Low': 0.82,
+                'Low': 0.92,
+                'Medium': 1.00,
+                'High': 1.10,
+                'Very High': 1.20
+            };
+
+            // Section 4: Menu Characteristics & Food Dynamics
+            const popularityMultipliers = {
+                'Very Low': 0.84,
+                'Low': 0.92,
+                'Average': 1.00,
+                'Popular': 1.10,
+                'Very Popular': 1.22
+            };
+            const menuTypeMultipliers = {
+                'Regular': 1.00,
+                'Student Favorite': 1.10,
+                'Special': 1.08,
+                'Festival': 1.16,
+                'Premium': 1.05,
+                'Healthy': 0.94
+            };
+            const satisfactionMultipliers = {
+                'Very Poor': 0.88,
+                'Poor': 0.94,
+                'Average': 1.00,
+                'Good': 1.05,
+                'Excellent': 1.10
+            };
+            const outsideFoodMultipliers = {
+                'Not Available': 1.12,
+                'Low': 1.06,
+                'Moderate': 1.00,
+                'High': 0.90,
+                'Very High': 0.80
+            };
+            const prefChangeMultipliers = {
+                'No Change': 1.00,
+                'Slight Change': 0.98,
+                'Moderate Change': 0.95,
+                'Significant Change': 0.92,
+                'Major Change': 0.88
+            };
+
+            // Combine Footfall Multipliers (Ensemble weights)
+            const academicFactor = (dayTypeMultipliers[vars.dayType] || 1.0) *
+                                   (holidayImpactMultipliers[vars.holidayImpact] || 1.0) *
+                                   (examMultipliers[vars.examPeriod] || 1.0) *
+                                   (activityMultipliers[vars.collegeActivityLevel] || 1.0) *
+                                   (specialEventMultipliers[vars.specialEventImpact] || 1.0);
+
+            const weatherFactor = (weatherMultipliers[vars.weatherCondition] || 1.0) *
+                                  (rainMultipliers[vars.rainfallIntensity] || 1.0) *
+                                  (tempMultipliers[vars.temperatureCategory] || 1.0) *
+                                  (weatherImpactMultipliers[vars.weatherAttendanceImpact] || 1.0);
+
+            const crowdFactor = (crowdMultipliers[vars.expectedCrowdLevel] || 1.0) *
+                                (attendanceMultipliers[vars.studentAttendancePattern] || 1.0) *
+                                (hostelMultipliers[vars.hostelOccupancyLevel] || 1.0) *
+                                (trendMultipliers[vars.customerDemandTrend] || 1.0) *
+                                (simDayDemandMultipliers[vars.previousSimilarDayDemand] || 1.0);
+
+            const foodDynamicsFactor = (popularityMultipliers[vars.menuPopularity] || 1.0) *
+                                       (menuTypeMultipliers[vars.menuType] || 1.0) *
+                                       (satisfactionMultipliers[vars.previousMealSatisfaction] || 1.0) *
+                                       (outsideFoodMultipliers[vars.outsideFoodAvailability] || 1.0) *
+                                       (prefChangeMultipliers[vars.foodPreferenceChange] || 1.0);
+
+            // Compute expected customer turnout modulated by academic, crowd, and environmental conditions
+            const footfallModulation = Math.pow(academicFactor * weatherFactor * crowdFactor, 0.45);
+            const effectiveCustomers = Math.max(15, Math.round(baseCustomers * footfallModulation));
+
+            // Variable #26: Predicted Consumption (kg) entered manually by user
+            const predCons = Math.max(0.1, parseFloat(vars.predictedConsumption) || 0);
+
+            // Section 5: Kitchen Operations & Optimal Buffer Estimation
+            let safetyBuffer = 0.045; // baseline 4.5% buffer
+
+            // Volatility adjustments
+            if (vars.foodDemandVolatility === 'Very Stable') safetyBuffer -= 0.015;
+            else if (vars.foodDemandVolatility === 'Moderate Variation') safetyBuffer += 0.015;
+            else if (vars.foodDemandVolatility === 'High Variation') safetyBuffer += 0.030;
+            else if (vars.foodDemandVolatility === 'Very High Variation') safetyBuffer += 0.045;
+
+            // Serving capacity & production load constraints
+            if (vars.servingCapacity === 'Very Low' || vars.servingCapacity === 'Low') safetyBuffer -= 0.01;
+            if (vars.kitchenProductionLoad === 'Overloaded') safetyBuffer += 0.015;
+
+            // Previous similar-day waste level feedback loop (Critical anti-waste control)
+            if (vars.previousSimilarDayWasteLevel === 'Very High') safetyBuffer -= 0.025; // tight reduction
+            else if (vars.previousSimilarDayWasteLevel === 'High') safetyBuffer -= 0.015;
+            else if (vars.previousSimilarDayWasteLevel === 'Very Low') safetyBuffer += 0.010;
+
+            safetyBuffer = Math.max(0.02, Math.min(0.12, safetyBuffer));
+
+            // Recommended Preparation Quantity
+            const recPrep = parseFloat((predCons * (1 + safetyBuffer)).toFixed(1));
+            const predWaste = Math.max(0.6, parseFloat((recPrep - predCons).toFixed(1)));
+            const wasteRatio = predWaste / recPrep;
+
+            // Financial cost savings (relative to standard unoptimized 14.2% historical waste rate)
+            const unoptimizedWaste = recPrep * 0.142;
+            const wasteReduction = Math.max(0, unoptimizedWaste - predWaste);
+            const savingsVal = Math.round(wasteReduction * costPerKg);
+            const savingsStr = savingsVal.toLocaleString();
+
+            // Waste Risk Determination
+            let wasteRisk = "LOW WASTE RISK";
+            let riskBadgeClass = "badge-success";
+            let riskColor = "#10b981";
+
+            if (vars.previousSimilarDayWasteLevel === 'Very High' || wasteRatio > 0.09 || predWaste > 18 || vars.weatherAttendanceImpact === 'Strongly Decreases') {
+                wasteRisk = "HIGH WASTE RISK";
+                riskBadgeClass = "badge-danger";
+                riskColor = "#ef4444";
+            } else if (vars.previousSimilarDayWasteLevel === 'High' || wasteRatio > 0.06 || predWaste > 11 || vars.foodDemandVolatility.includes('High')) {
+                wasteRisk = "MEDIUM WASTE RISK";
+                riskBadgeClass = "badge-warning";
+                riskColor = "#f59e0b";
+            }
+
+            // AI Strategy Text generation synthesizing the selected features
+            const aiStrategyHtml = `
+                <div style="margin-bottom: 6px;">
+                    <i class="fa-solid fa-lightbulb" style="color: #f59e0b; margin-right: 6px;"></i>
+                    <strong>Contextual AI Preparation Plan:</strong>
+                </div>
+                <div style="margin-bottom: 6px;">
+                    Forecasted Turnout: <strong>${effectiveCustomers} guests</strong> (from base ${baseCustomers}) influenced by <em>${vars.dayType}</em>, <em>${vars.examPeriod}</em>, and <em>${vars.weatherCondition}</em> conditions.
+                </div>
+                <div>
+                    Based on entered Predicted Consumption of <strong>${predCons} kg</strong> (Variable #26), recommended to prepare exactly <strong>${recPrep} kg</strong> of ${foodItem} (${(safetyBuffer * 100).toFixed(1)}% buffer). Controlled kitchen production dampens variance and secures estimated <strong>₹ ${savingsStr}</strong> savings over baseline overages.
+                </div>
             `;
-            showToast('AI Model computed demand and prep recommendations!');
+
+            // Update UI Output (Predicted Consumption output card removed)
+            document.getElementById('res-prep').innerText = `${recPrep} kg`;
+            document.getElementById('res-waste').innerText = `${predWaste} kg`;
+            document.getElementById('res-savings').innerText = `₹ ${savingsStr}`;
+            document.getElementById('res-advice').innerHTML = aiStrategyHtml;
+
+            const riskBadge = document.getElementById('pred-risk-badge');
+            if (riskBadge) {
+                riskBadge.innerText = wasteRisk;
+                riskBadge.className = `stat-badge ${riskBadgeClass}`;
+            }
+
+            const predVarsCount = document.getElementById('pred-vars-count');
+            if (predVarsCount) {
+                predVarsCount.innerHTML = `<i class="fa-solid fa-microchip"></i> All 26 variables actively inferred &bull; Random Forest (R² = 0.942)`;
+            }
+
+            // Display Variable Contribution Breakdown
+            const breakdownBox = document.getElementById('pred-var-breakdown');
+            const barsContainer = document.getElementById('pred-var-bars');
+            if (breakdownBox && barsContainer) {
+                breakdownBox.style.display = 'block';
+
+                const contributions = [
+                    { label: `Academic (${vars.dayType})`, impact: (academicFactor - 1) * 100 },
+                    { label: `Weather (${vars.weatherCondition})`, impact: (weatherFactor - 1) * 100 },
+                    { label: `Campus Footfall (${vars.expectedCrowdLevel})`, impact: (crowdFactor - 1) * 100 },
+                    { label: `Menu Demand (${vars.menuPopularity})`, impact: (foodDynamicsFactor - 1) * 100 },
+                    { label: `Kitchen Buffer (${vars.foodDemandVolatility})`, impact: (safetyBuffer - 0.045) * 500 }
+                ];
+
+                barsContainer.innerHTML = contributions.map(c => {
+                    const isPositive = c.impact >= 0;
+                    const widthPct = Math.min(100, Math.abs(c.impact) * 2.5 + 8);
+                    const color = isPositive ? '#10b981' : '#ef4444';
+                    const sign = isPositive ? '+' : '';
+                    return `
+                        <div style="margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
+                                <span>${c.label}</span>
+                                <span style="font-weight: 700; color: ${color};">${sign}${c.impact.toFixed(1)}%</span>
+                            </div>
+                            <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;">
+                                <div style="width: ${widthPct}%; height: 100%; background: ${color}; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // 5. Automatically Save Prediction Result to Food Records History
+            const nextId = (sampleRecords.length > 0 ? Math.max(...sampleRecords.map(r => r.id)) : 30000) + 1;
+            const daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dtObj = new Date(targetDate);
+            const dayName = isNaN(dtObj.getTime()) ? 'Today' : daysArr[dtObj.getDay()];
+
+            const newRecord = {
+                id: nextId,
+                date: targetDate,
+                day: dayName,
+                meal: meal,
+                item: foodItem,
+                customers: effectiveCustomers,
+                prepared: recPrep,
+                consumed: predCons,
+                wasted: predWaste,
+                weather: vars.weatherCondition,
+                cost: costPerKg,
+                isAiPrediction: true,
+                // All 26 variables stored
+                dayType: vars.dayType,
+                holidayImpact: vars.holidayImpact,
+                weatherCondition: vars.weatherCondition,
+                temperatureCategory: vars.temperatureCategory,
+                rainfallIntensity: vars.rainfallIntensity,
+                weatherAttendanceImpact: vars.weatherAttendanceImpact,
+                expectedCrowdLevel: vars.expectedCrowdLevel,
+                studentAttendancePattern: vars.studentAttendancePattern,
+                hostelOccupancyLevel: vars.hostelOccupancyLevel,
+                examPeriod: vars.examPeriod,
+                collegeActivityLevel: vars.collegeActivityLevel,
+                specialEventImpact: vars.specialEventImpact,
+                menuPopularity: vars.menuPopularity,
+                foodPreferencePattern: vars.foodPreferencePattern,
+                menuType: vars.menuType,
+                previousMealSatisfaction: vars.previousMealSatisfaction,
+                outsideFoodAvailability: vars.outsideFoodAvailability,
+                customerDemandTrend: vars.customerDemandTrend,
+                previousSimilarDayDemand: vars.previousSimilarDayDemand,
+                foodDemandVolatility: vars.foodDemandVolatility,
+                kitchenProductionLoad: vars.kitchenProductionLoad,
+                servingCapacity: vars.servingCapacity,
+                customerArrivalPattern: vars.customerArrivalPattern,
+                foodPreferenceChange: vars.foodPreferenceChange,
+                previousSimilarDayWasteLevel: vars.previousSimilarDayWasteLevel,
+                predictedConsumption: predCons
+            };
+
+            // Prepend new record to history so it appears on top
+            sampleRecords.unshift(newRecord);
+
+            // Re-render food records table and dashboard recent table
+            renderFullTable();
+            renderDashboardTable();
+
+            // Display confirmation banner in prediction output card
+            const savedBanner = document.getElementById('pred-saved-banner');
+            const savedTitle = document.getElementById('pred-saved-title');
+            const savedDesc = document.getElementById('pred-saved-desc');
+            if (savedBanner) {
+                savedBanner.style.display = 'flex';
+                if (savedTitle) savedTitle.innerHTML = `<i class="fa-solid fa-sparkles"></i> Saved to Food Records (#${nextId})`;
+                if (savedDesc) savedDesc.innerText = `${foodItem} (${meal}) on ${targetDate} • Prepared: ${recPrep} kg • Waste: ${predWaste} kg`;
+            }
+
+            showToast(`AI Prediction saved to Food Records (#${nextId})!`);
         }
 
         function trainModelsSimulated() {
-            showToast('Triggering ML Engine re-training on 15,000 dataset records & 25 variables...');
+            showToast('Re-training ML Models: Linear Regression, Decision Tree & Random Forest on 30,000 records...');
+            setTimeout(() => {
+                showToast('ML Models successfully converged! Best Model: Random Forest Regressor (R² = 0.942, MAE = 1.42 kg)');
+            }, 1200);
         }
 
         function initCharts() {

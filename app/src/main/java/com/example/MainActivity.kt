@@ -190,10 +190,10 @@ class MainActivity : ComponentActivity() {
                                 val destinations = listOf(
                                     AppDestination.DASHBOARD,
                                     AppDestination.PREDICTION,
+                                    AppDestination.RECORDS_HISTORY,
                                     AppDestination.ADD_DATA,
                                     AppDestination.ANALYTICS,
-                                    AppDestination.MODEL_PERFORMANCE,
-                                    AppDestination.RECORDS_HISTORY
+                                    AppDestination.MODEL_PERFORMANCE
                                 )
 
                                 destinations.forEach { dest ->

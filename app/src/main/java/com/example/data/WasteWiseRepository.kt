@@ -56,8 +56,8 @@ class WasteWiseRepository private constructor(context: Context) {
                 // 1. Insert admin user
                 userDao.insertUser(DatasetGenerator.getDemoAdmin())
 
-                // 2. Insert 15,000 realistic simulated food records
-                val simulatedRecords = DatasetGenerator.generateRealisticDataset(15000)
+                // 2. Insert 30,000 realistic simulated food records
+                val simulatedRecords = DatasetGenerator.generateRealisticDataset(30000)
                 foodRecordDao.insertRecords(simulatedRecords)
 
                 // 3. Train models immediately on the seeded data
@@ -169,6 +169,24 @@ class WasteWiseRepository private constructor(context: Context) {
             createdAt = System.currentTimeMillis()
         )
         predictionDao.insertPrediction(entity)
+
+        // Also save directly into Food Records history
+        val foodRecord = FoodRecordEntity(
+            date = predictionDate,
+            day = day,
+            mealType = mealType,
+            foodItem = foodItem,
+            actualCustomers = result.predictedCustomers,
+            foodPrepared = result.recommendedPreparation,
+            foodConsumed = result.predictedConsumption,
+            foodWasted = result.predictedWaste,
+            holiday = holiday,
+            specialEvent = specialEvent,
+            weather = weather,
+            costPerKg = costPerKg,
+            createdAt = System.currentTimeMillis()
+        )
+        foodRecordDao.insertRecord(foodRecord)
 
         result
     }
