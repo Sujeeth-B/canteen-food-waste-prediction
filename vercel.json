@@ -1,10 +1,13 @@
 {
   "cleanUrls": true,
-  "rewrites": [
+  "redirects": [
     {
       "source": "/",
-      "destination": "/web_preview/index.html"
-    },
+      "destination": "/web_preview",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
     {
       "source": "/wastewise_large_dataset_30k.csv",
       "destination": "/web_preview/wastewise_large_dataset_30k.csv"
@@ -12,10 +15,6 @@
     {
       "source": "/wastewise_large_dataset_15k.csv",
       "destination": "/web_preview/wastewise_large_dataset_15k.csv"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/web_preview/$1"
     }
   ]
 }

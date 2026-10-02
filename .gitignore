@@ -11,3 +11,4 @@ captures/
 .cxx
 .env
 debug.keystore
+.vercel
