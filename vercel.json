@@ -6,6 +6,10 @@
       "destination": "/web_preview/index.html"
     },
     {
+      "source": "/wastewise_large_dataset_30k.csv",
+      "destination": "/web_preview/wastewise_large_dataset_30k.csv"
+    },
+    {
       "source": "/wastewise_large_dataset_15k.csv",
       "destination": "/web_preview/wastewise_large_dataset_15k.csv"
     },

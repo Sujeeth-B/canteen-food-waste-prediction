@@ -1,0 +1,21 @@
+# Ignore Android project and Gradle files
+.gradle
+.idea
+.kotlin
+.kilo
+app
+gradle
+build
+local.properties
+debug.keystore
+*.iml
+
+# Ignore Python and server scripts
+server.py
+generate_ppt.py
+WasteWise_AI_Presentation.pptx
+build_output.txt
+metadata.json
+
+# Scripts
+*.bat
